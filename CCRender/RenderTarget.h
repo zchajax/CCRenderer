@@ -2,7 +2,7 @@
 #include <d3d11_1.h>
 
 class TEXTURE_DX11;
-class RENDER_TARGET;
+class RENDER_TARGET
 {
 public:
 
@@ -16,7 +16,7 @@ public:
 	~RENDER_TARGET();
 
 	ID3D11RenderTargetView* GetRenderTarget() { return _RenderTarget; }
-	ID3D11DepthStencilView* GetRenderTarget() { return _DepthRenderTarget; }
+	ID3D11DepthStencilView* GetDepthRenderTarget() { return _DepthRenderTarget; }
 	TEXTURE_DX11*		GetTexture() { return _pTexture; }
 
 	UINT32			GetWidth() { return _uiWidth; }
@@ -41,6 +41,6 @@ private:
 	BOOL				_bIsDepth;
 	BOOL				_bIsEmptyTarget;
 
-	friend class SWAP_CHAIN;
-	friend class CascadedShadowMap;
+	/*friend class SWAP_CHAIN;
+	friend class CascadedShadowMap;*/
 };

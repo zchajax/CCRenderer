@@ -9,14 +9,14 @@ public:
 		m_PreTime(0), m_CurTime(0)
 	{
 		__int64 countsPerSec;
-		QueryPerformanceFrequency((LARGE_INTEGER*)&countPerSec);
-		m_SecondPerCount = 1.0 / (double)contsPerSec;
+		QueryPerformanceFrequency((LARGE_INTEGER*)&countsPerSec);
+		m_SecondPerCount = 1.0 / (double)countsPerSec;
 	}
 
 	void Start()
 	{
 		__int64 preTime;
-		QueryPerformanceCounter((LARGE_INTERGER*)&preTime);
+		QueryPerformanceCounter((LARGE_INTEGER*)&preTime);
 	}
 
 	void tick()
@@ -38,7 +38,7 @@ public:
 
 		if (m_DeltaTime < 0.0f)
 		{
-			m_DeltaTime = 0.0
+            m_DeltaTime = 0.0;
 		}
 	}
 

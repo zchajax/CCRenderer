@@ -37,7 +37,7 @@ void Texture::Release()
 	delete this;
 }
 
-ID3DShaderResourceView* Texture::GetShaderResoure()
+ID3D11ShaderResourceView* Texture::GetShaderResoure()
 {
 	return TextureManager::GetInstance()->GetShaderResourceView(m_sPath.c_str());
 }
