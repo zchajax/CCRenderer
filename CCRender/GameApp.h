@@ -13,6 +13,8 @@ class CascadedShadowMap;
 class SWAP_CHAIN;
 class GameApp
 {
+public:
+
 	GameApp(void);
 
 	~GameApp();
@@ -84,7 +86,7 @@ class GameApp
 		{
 			return NULL;
 		}
-		wchar_t* pResult = new wchart_t[nLen];
+		wchar_t* pResult = new wchar_t[nLen];
 		MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, szStr, -1, pResult, nLen);
 		return pResult;
 	}

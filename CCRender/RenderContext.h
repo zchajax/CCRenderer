@@ -11,7 +11,7 @@ class RENDER_TARGET;
 class VERTEX_BUFFER;
 class SWAP_CHAIN;
 
-class RENDER_CONTEX
+class RENDER_CONTEXT
 {
 public:
 	

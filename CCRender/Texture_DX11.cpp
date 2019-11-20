@@ -1,5 +1,5 @@
 #include "Texture_DX11.h"
-#include "RenderContex.h"
+#include "RenderContext.h"
 #include <assert.h>
 
 TEXTURE_DX11::TEXTURE_DX11() : 
@@ -7,9 +7,9 @@ TEXTURE_DX11::TEXTURE_DX11() :
 	_uiHeight(0),
 	_Format(DXGI_FORMAT_UNKNOWN),
 	_uiMipMapLevels(1),
-	_Filter(D3D11_FILTER_ANISOTROPOC),
+	_Filter(D3D11_FILTER_ANISOTROPIC),
 	_AddressU(D3D11_TEXTURE_ADDRESS_WRAP),
-	_AddressV(D3D11_TEXTURE_ADDRESS_WAWP);
+	_AddressV(D3D11_TEXTURE_ADDRESS_WRAP),
 	_MipLodBias(0.0f),
 	_ComparisionFunc(D3D11_COMPARISON_NEVER),
 	_pD3DTexture(nullptr),
@@ -31,9 +31,9 @@ TEXTURE_DX11::TEXTURE_DX11(
 	_uiHeight(uiHeight),
 	_Format(eFormat),
 	_uiMipMapLevels(nMipMapLevels),
-	_Filter(D3D11_FILTER_ANISOTROPOC),
+	_Filter(D3D11_FILTER_ANISOTROPIC),
 	_AddressU(D3D11_TEXTURE_ADDRESS_WRAP),
-	_AddressV(D3D11_TEXTURE_ADDRESS_WAWP);
+	_AddressV(D3D11_TEXTURE_ADDRESS_WRAP),
 	_MipLodBias(0.0f),
 	_ComparisionFunc(D3D11_COMPARISON_NEVER),
 	_pD3DTexture(nullptr),
@@ -49,7 +49,7 @@ TEXTURE_DX11::~TEXTURE_DX11()
 	Release();
 }
 
-void TEXTURE_DX11:Create()
+void TEXTURE_DX11::Create()
 {
 	D3D11_TEXTURE2D_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
@@ -83,7 +83,7 @@ void TEXTURE_DX11:Create()
 	}
 
 	//Create texture
-	HRESULT hr = RENDER_CONTEX::GetDevice()->CreateTexture2D(&desc, NULL, &_pD3DTexture);
+	HRESULT hr = RENDER_CONTEXT::GetDevice()->CreateTexture2D(&desc, NULL, &_pD3DTexture);
 	assert(SUCCEEDED(hr));
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
@@ -125,7 +125,7 @@ void TEXTURE_DX11::CreateSampler()
 	sampDesc.AddressW = _AddressV;
 	sampDesc.MipLODBias = 0.0f;
 	sampDesc.MaxAnisotropy = 1;
-	sampDesc.ComparisonFunc = _ComparsionFunc;
+	sampDesc.ComparisonFunc = _ComparisionFunc;
 	sampDesc.BorderColor[0] = 0;
 	sampDesc.BorderColor[1] = 0;
 	sampDesc.BorderColor[2] = 0;

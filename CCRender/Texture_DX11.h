@@ -17,37 +17,40 @@ public:
 
 	~TEXTURE_DX11();
 
-	void			SetFilterType(D3D11_FILTER eFilterType) { _Filter = eFilterType; }
-	void			SetAddressUType(D3D11_TEXTURE_ADDRESS_MODE eAddressType) { _AddressU = eAddressType; }
-	void			SetAddressVType(D3D11_TEXTURE_ADDRESS_MODE eAddressType) { _AddressV = eAddressType; }
+	void			            SetFilterType(D3D11_FILTER eFilterType) { _Filter = eFilterType; }
+	void			            SetAddressUType(D3D11_TEXTURE_ADDRESS_MODE eAddressType) { _AddressU = eAddressType; }
+	void			            SetAddressVType(D3D11_TEXTURE_ADDRESS_MODE eAddressType) { _AddressV = eAddressType; }
 
-	ID3D11Texture2D*	GetD3DTexture() { return _pD3DTexture; }
-	ID3D11SamplerState*	GetSamplerState() { return _pD3DSampler; }
-	ID3D11SamplerState*	GetShaderResource() { return _pShaderResourceView; }
+	ID3D11Texture2D*	        GetD3DTexture() { return _pD3DTexture; }
+	ID3D11SamplerState*	        GetSamplerState() { return _pD3DSampler; }
+	ID3D11ShaderResourceView*   GetShaderResource() { return _pShaderResourceView; }
 
-	UNIT32			GetWidth() { return _uiWidth; }
-	UNIT32			GetHeight() { return _uiWidth; }
-
-private:
-
-	void			Create();
-	void			Release();
-	void			CreateSampler();
+	UINT32			            GetWidth() { return _uiWidth; }
+    UINT32			            GetHeight() { return _uiWidth; }
 
 private:
 
-	UINT32			_uiWidth;
-	UINT32			_uiHeight;
-	DXGI_FORMAT		_Format;
-	UINT32			_uiMipMapLevels;
+	void			            Create();
+	void			            Release();
+	void			            CreateSampler();
 
-	D3D11_FILTER		_Filter;
-	D3D11_TEXTURE_ADDRESS_MODE _AddressU;
-	D3D11_TEXTURE_ADDRESS_MODE _AddressV;
-	FLOAT			_MipLoadBias;
-	D3D11_COMPARISON_FUNC	_ComparisionFunc;
+private:
+
+	UINT32			            _uiWidth;
+	UINT32			            _uiHeight;
+	DXGI_FORMAT		            _Format;
+	UINT32			            _uiMipMapLevels;
+
+	D3D11_FILTER		        _Filter;
+	D3D11_TEXTURE_ADDRESS_MODE  _AddressU;
+	D3D11_TEXTURE_ADDRESS_MODE  _AddressV;
+	FLOAT			            _MipLodBias;
+	D3D11_COMPARISON_FUNC	    _ComparisionFunc;
+    ID3D11Texture2D*            _pD3DTexture;
+    ID3D11SamplerState*         _pD3DSampler;
+    ID3D11ShaderResourceView*   _pShaderResourceView;
 	
-	BOOL			_bRenderTarget;
+	BOOL			            _bRenderTarget;
 
 	friend class		RENDER_TARGET;
 	friend class		SWAP_CHAIN;

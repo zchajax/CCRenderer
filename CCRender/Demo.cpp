@@ -1,5 +1,7 @@
 #include "Demo.h"
 #include "GameApp.h"
+#include <windows.h>
+#include <string>
 
 #define MAX_LOADSTRING 100
 
@@ -20,7 +22,7 @@ LPSTR*			CommandLineToArgvA(LPCWSTR lpCmdLine, __out int* pNumArgs);
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		_In_opt_ HINSTANCE hPrevInstance,
 		_In_ LPWSTR lpCmdLine,
-		_In_ int nCmdShow);
+		_In_ int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
@@ -126,7 +128,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow, LPWSTR lpCmdLine)
 	hInst = hInstance;
 
 	HWND hWnd;
-	if (!InitWindows(hInstance, mCmdShow, &hWnd))
+	if (!InitWindows(hInstance, nCmdShow, &hWnd))
 	{
 		return FALSE;
 	}

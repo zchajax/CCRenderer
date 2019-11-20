@@ -17,7 +17,7 @@ public:
 
 	void Render();
 
-	void SetViewParams(const XMFLOAT4& Position, const XMFLOAT& LookAt, const XMFLOAT4& Up);
+	void SetViewParams(const XMFLOAT4& Position, const XMFLOAT4& LookAt, const XMFLOAT4& Up);
 
 	void SetProjParams(FLOAT Width,
 		FLOAT Height,
@@ -56,18 +56,18 @@ public:
 
 private:
 
-	struct ConstantLightBuffer
-	{
-		XMFLOAT4 vAmbientColor;
-		XMFLOAT4 vLightDir;
-		XMFLOAT4 vLightColor;
-		XMMATRIX mLightView;
-		XMMATRIX mLightProj;
-		FLOAT Shiniess;
-		FLOAT padding1;
-		FLOAT padding2;
-		FLOAT padding3;
-	}
+    struct ConstantLightBuffer
+    {
+        XMFLOAT4 vAmbientColor;
+        XMFLOAT4 vLightDir;
+        XMFLOAT4 vLightColor;
+        XMMATRIX mLightView;
+        XMMATRIX mLightProj;
+        FLOAT Shiniess;
+        FLOAT padding1;
+        FLOAT padding2;
+        FLOAT padding3;
+    };
 
 	void CaculateViewMatrix();
 
