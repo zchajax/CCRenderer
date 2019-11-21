@@ -23,11 +23,11 @@ void SWAP_CHAIN::Create()
 	HRESULT hr;
 	
 	IDXGIFactory1* dxgiFactory = nullptr;
-	IDXGOAdapter* dxgiDevice = nullptr;
+    IDXGIDevice* dxgiDevice = nullptr;
 	hr = RENDER_CONTEXT::GetDevice()->QueryInterface(__uuidof(IDXGIDevice), reinterpret_cast<void**>(&dxgiDevice));
 	if (SUCCEEDED(hr))
 	{
-		IDXGIAdapater* adapter = nullptr;
+        IDXGIAdapter* adapter = nullptr;
 		hr = dxgiDevice->GetAdapter(&adapter);
 		if (SUCCEEDED(hr))
 		{
@@ -46,30 +46,30 @@ void SWAP_CHAIN::Create()
 	sd.BufferDesc.RefreshRate.Numerator = 0;
 	sd.BufferDesc.RefreshRate.Denominator = 0;
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT;
-	sd.OutputWindow = m_Wind;
-	sd.SampledDesc.Count = 1;
+	sd.OutputWindow = m_hWnd;
+	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
 	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITH;
+	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 	sd.Windowed = true;
 
 	hr = dxgiFactory->CreateSwapChain(RENDER_CONTEXT::GetDevice(), &sd, &m_pSwapChain);
 	assert(SUCCEEDED(hr));
 
-	m_pFrontBuffer = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_B8GBR8A8_UNORM, true);
-	m_pFrontBuffer->pTexture->_uiWidth = RENDER_CONTEXT::GetWidth();
-	m_pFrontBuffer->pTexture->_uiHeight = RENDER_CONTEXT::GetHeight();
-	m_pFrontBuffer->pTexture->_Format = DXGI_FORMAT_B8GBR8A8_UNORM;
+	m_pFrontBuffer = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_B8G8R8A8_UNORM, true);
+    m_pFrontBuffer->_pTexture->_uiWidth = RENDER_CONTEXT::GetWidth();
+	m_pFrontBuffer->_pTexture->_uiHeight = RENDER_CONTEXT::GetHeight();
+	m_pFrontBuffer->_pTexture->_Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 
-	hr = m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&m_pFrontBuffer->_pTexture->pD3DTexture);
+	hr = m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&m_pFrontBuffer->_pTexture->_pD3DTexture);
 	assert(SUCCEEDED(hr));
 
 	// create colored render target
-	hr = RENDER_CONTEXT::GetDevice()->CreateRenderTargetView(p_FrontBuffer->_pTexture->_pD3DTexture, nullptr, &m_pFrontBuffer->_RenderTarget);
+	hr = RENDER_CONTEXT::GetDevice()->CreateRenderTargetView(m_pFrontBuffer->_pTexture->_pD3DTexture, nullptr, &m_pFrontBuffer->_RenderTarget);
 	assert(SUCCEEDED(hr));
 
 	// create depth render target
-	m_pDepthBuffer = new RenderTarget(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_R32G8X24_TYPELESS, false);
+	m_pDepthBuffer = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_R32G8X24_TYPELESS, false);
 	assert(SUCCEEDED(hr));
 	
 }

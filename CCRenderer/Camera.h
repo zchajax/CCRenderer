@@ -19,11 +19,11 @@ public:
 
 	void SetViewParams(const XMFLOAT4& Eye, const XMFLOAT4& LookAt);
 
-	void SetViewParams(const XMFLOAT4& Eye, const XMFLOAT4& LookAt, const XMFLOAT& UP);
+	void SetViewParams(const XMFLOAT4& Eye, const XMFLOAT4& LookAt, const XMFLOAT4& UP);
 
 	void SetProjectParams(FLOAT FLFovAngleY, FLOAT AspectRatio, FLOAT NearZ, FLOAT FarZ);
 
-	void SetEye(const XMFLOAT& Eye);
+	void SetEye(const XMFLOAT4& Eye);
 
 	void SetLookAt(const XMFLOAT4& LookAt);
 
@@ -76,12 +76,12 @@ public:
 		return m_RightVector;
 	}
 
-	const XMFLOAT4& GetViewMatrix() const
+	const XMFLOAT4X4& GetViewMatrix() const
 	{
 		return m_mViewMatrix;
 	}
 
-	const XMFLOAT4& GetProjMatrix() const
+	const XMFLOAT4X4& GetProjMatrix() const
 	{
 		return m_mProjMatrix;
 	}

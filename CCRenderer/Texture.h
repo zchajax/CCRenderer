@@ -1,12 +1,13 @@
 #pragma once
 
 #include <string>
+#include <d3d11.h>
 
 class Texture
 {
 public:
 
-	static HRESULT Create(const char* path, Texture** texture);
+    static HRESULT Create(const char* path, Texture** texture);
 
 	void Release();
 

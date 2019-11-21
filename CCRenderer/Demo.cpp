@@ -10,13 +10,13 @@ HINSTANCE hInst;				// current instance
 WCHAR szTitle[MAX_LOADSTRING];			// The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];		// the main window class name
 
-ATOM			MyRegisterClass(HINSTANCE hInstance);
-BOOL			InitInstance(HINSTANCE, int, LPWSTR);
-BOOL			InitWindows(HINSTANCE, int, HWND*);
+ATOM			    MyRegisterClass(HINSTANCE hInstance);
+BOOL			    InitInstance(HINSTANCE, int, LPWSTR);
+BOOL			    InitWindows(HINSTANCE, int, HWND*);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
-std::string		wstr_to_str(const std::wstring& wstr, UINT CodePage = CP_OEMCP);
-LPSTR*			CommandLineToArgvA(LPCWSTR lpCmdLine, __out int* pNumArgs);
+std::string		    wstr_to_str(const std::wstring& wstr, UINT CodePage = CP_OEMCP);
+LPSTR*			    CommandLineToArgvA(LPCWSTR lpCmdLine, __out int* pNumArgs);
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
@@ -29,10 +29,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// Initialize global strings
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-	LoadStringW(hInstance, IDC_DEMO, szWindowClass, MAX_LOADSTRING);
+	LoadStringW(hInstance, IDC_MYICON, szWindowClass, MAX_LOADSTRING);
 
 	// Perform application initialization:
-	if (!InitInstance (hInstance, mCmdShow, lpCmdLine))
+	if (!InitInstance (hInstance, nCmdShow, lpCmdLine))
 	{
 		return FALSE;	
 	}
@@ -64,7 +64,7 @@ std::string wstr_to_str(const std::wstring& wstr, UINT CodePage)
 		str = pchar_str;
 	}
 
-	delete = pchar_str;
+	delete pchar_str;
 	return str;
 }
 
@@ -107,12 +107,12 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 {
 	WNDCLASSEXW wcex;
 
-	wcex.cbSize		= sizeof(WNDCLASSEXW);
-	wcex.style		= CS_HREDRAW | CS_ VREDRAW;
+	wcex.cbSize		    = sizeof(WNDCLASSEXW);
+	wcex.style		    = CS_HREDRAW | CS_VREDRAW;
 	wcex.cbClsExtra		= 0;
 	wcex.cbWndExtra		= 0;
 	wcex.hInstance		= hInstance;
-	wcex.hIcon		= LoadIcon(hInstance, MAKEINTRESOURCE(IDI_DEMO));
+	wcex.hIcon		    = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_CCRENDERER));
 	wcex.hCursor		= LoadCursor(nullptr, IDC_ARROW);
 	wcex.hbrBackground	= (HBRUSH)(COLOR_WINDOW + 1);
 	wcex.lpszMenuName	= szWindowClass;
@@ -153,7 +153,7 @@ BOOL InitWindows(HINSTANCE hInstance, int nCmdShow, HWND* hWnd)
 {
 	RECT wr = {0, 0, 1920, 1080};
 
-	LONG style = (WS_OVERLAPPPEDWINDOW & ~WS_THICKFRAME & ~WSMAXIMIZEBOX);
+	LONG lStyle = (WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX);
 
 	AdjustWindowRect(&wr, lStyle, FALSE);
 
@@ -191,7 +191,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 
-	case WN_PAINT:
+	case WM_PAINT:
 		{
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(hWnd, &ps);
@@ -208,7 +208,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0);
 		break;
 	default:
-		return DefWindowPro(hWnd, message, wParam, lParam);	
+		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	return 0;
 }

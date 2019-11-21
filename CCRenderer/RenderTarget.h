@@ -41,6 +41,6 @@ private:
 	BOOL				_bIsDepth;
 	BOOL				_bIsEmptyTarget;
 
-	/*friend class SWAP_CHAIN;
-	friend class CascadedShadowMap;*/
+	friend class SWAP_CHAIN;
+	//friend class CascadedShadowMap;
 };

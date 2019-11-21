@@ -14,14 +14,14 @@ VERTEX_BUFFER::VERTEX_BUFFER(UINT32 vertexCount, UINT32 vertexStride, void* init
 	BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	BufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	BufferDesc.CPUAccessFlags = 0;
-	BufferDesc.MisFlags = 0;
-	BufferDesc.StructByteStride = 0;
+	BufferDesc.MiscFlags = 0;
+	BufferDesc.StructureByteStride = 0;
 
-	D3D11_SUBSOURCE_DATA InitialData;
+	D3D11_SUBRESOURCE_DATA InitialData;
 	ZeroMemory(&InitialData, sizeof(InitialData));
-	InitialData.pSysMen = initData;
+	InitialData.pSysMem = initData;
 
-	HRESULT hr = RENDER_CONTEX::GetDevice()->CreateBuffer(&BufferDesc, &InitialData, &m_pBuffer);
+	HRESULT hr = RENDER_CONTEXT::GetDevice()->CreateBuffer(&BufferDesc, &InitialData, &m_pBuffer);
 	assert(SUCCEEDED(hr));
 }
 

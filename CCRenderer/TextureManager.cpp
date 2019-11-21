@@ -29,8 +29,8 @@ HRESULT TextureManager::LoadTexture(const char* path)
 
 	GameApp* app = GameApp::getInstance();
 	
-	ID3DShaderResourceView* tempTexture = NULL;
-	hr = app->CreateShaderResourceViewFromFile(app->AnsiToUnicode(path), NULL, NULL, &tempTexture, NULL);
+	ID3D11ShaderResourceView* tempTexture = NULL;
+	hr = app->CreateShaderResourceViewFromFile((path), NULL, NULL, &tempTexture, NULL);
 	if (FAILED(hr))
 	{
 		return S_FALSE;
@@ -50,5 +50,5 @@ ID3D11ShaderResourceView* TextureManager::GetShaderResourceView(const char* path
 		temp = 	m_mTextures[path];
 	}
 
-	return path;
+	return temp;
 }

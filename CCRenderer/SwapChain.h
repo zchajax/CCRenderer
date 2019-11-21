@@ -27,5 +27,5 @@ private:
 	IDXGISwapChain*	m_pSwapChain;
 	RENDER_TARGET*	m_pFrontBuffer;
 	RENDER_TARGET*	m_pDepthBuffer;
-	HWND		m_hWnd;
+	HWND		    m_hWnd;
 };

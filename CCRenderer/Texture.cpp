@@ -13,6 +13,8 @@ HRESULT Texture::Create(const char* path, Texture** texture)
 	}
 
 	*texture = temp;
+
+    return S_OK;
 }
 
 Texture::Texture()
