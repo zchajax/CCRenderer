@@ -55,6 +55,6 @@ struct ConstantShadowMapBuffer
 {
 	XMMATRIX mView;
 	XMMATRIX mProjection[MAX_CASCADED];
-	XMFLOAT4 vfCascadedFrustumsEyeSpaceDepths[2];
+	XMFLOAT4 vfCascadeFrustumsEyeSpaceDepths[2];
 	XMFLOAT4 vTextureSize;
 };

@@ -54,7 +54,7 @@ public:
     void OnEvent(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
     // Add shape to the Rendering list
-    void AddNote(Node* shape);
+    void AddNode(Node* shape);
 
     // Remove shape from the rendering list
     void RemoveNode(Node* shape);
@@ -67,13 +67,13 @@ public:
 
     // Compile shader from file
     HRESULT CompileShaderFromFile(
-        LPCSTR szFileName,
+        LPCWSTR szFileName,
         LPCSTR szEntryPoint,
         LPCSTR szShaderModel,
         ID3DBlob** ppBlobOut);
 
     HRESULT CreateShaderResourceViewFromFile(
-        LPCSTR				pSrcFile,
+        LPCWSTR				pSrcFile,
         D3DX11_IMAGE_LOAD_INFO* pLoadInfo,
         ID3DX11ThreadPump* pPump,
         ID3D11ShaderResourceView** ppShaderResourceView,
@@ -92,6 +92,7 @@ public:
     }
 
 private:
+
     static GameApp* s_GameApp;
 
     HWND			m_hWnd;

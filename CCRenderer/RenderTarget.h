@@ -34,7 +34,7 @@ private:
 	ID3D11RenderTargetView*		_RenderTarget;
 	ID3D11DepthStencilView*		_DepthRenderTarget;
 
-	TEXTURE_DX11*			_pTexture;
+	TEXTURE_DX11*		_pTexture;
 	UINT32				_uiWidth;
 	UINT32				_uiHeight;
 	DXGI_FORMAT			_Format;
@@ -42,5 +42,5 @@ private:
 	BOOL				_bIsEmptyTarget;
 
 	friend class SWAP_CHAIN;
-	//friend class CascadedShadowMap;
+	friend class CascadedShadowMap;
 };

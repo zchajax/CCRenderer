@@ -39,6 +39,11 @@ public:
 		return m_LookAt;
 	}
 
+    const XMFLOAT4X4& GetLightView() const
+    {
+        return m_LightView;
+    }
+
 	const XMFLOAT4X4& GetLightProj() const
 	{
 		return m_LightProj;

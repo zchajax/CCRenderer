@@ -7,7 +7,7 @@
 
 HWND RENDER_CONTEXT::_hWnd = 0;
 ID3D11Device* RENDER_CONTEXT::_pD3DDevice = nullptr;
-ID3D11DeviceContext* RENDER_CONTEXT::p_ImmediateContext = nullptr;
+ID3D11DeviceContext* RENDER_CONTEXT::_pImmediateContext = nullptr;
 SWAP_CHAIN* RENDER_CONTEXT::_pSwapChain = nullptr;
 ID3DUserDefinedAnnotation* RENDER_CONTEXT::_pAnnotation = nullptr;
 UINT32 RENDER_CONTEXT::_uiWidth = 0;
@@ -25,7 +25,7 @@ void RENDER_CONTEXT::Init(HWND hWnd, UINT32 uiWidth, UINT32 uiHeight)
 	HRESULT res = D3D11CreateDevice(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, NULL, NULL, 0, D3D11_SDK_VERSION, NULL, &tFeatureLevel, NULL);
 	if (tFeatureLevel < D3D_FEATURE_LEVEL_11_0)
 	{
-		MessageBox(hWnd, "Your graphics card not support dx11");
+		//MessageBox(hWnd, L"Your graphics card not support dx11");
 		exit(0);
 	}
 
@@ -36,14 +36,14 @@ void RENDER_CONTEXT::Init(HWND hWnd, UINT32 uiWidth, UINT32 uiHeight)
 		flags = static_cast<D3D11_CREATE_DEVICE_FLAG>(flags | D3D11_CREATE_DEVICE_DEBUG);
 	}
 
-	res = D3D11CreateDevice(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, flags, NULL, 0, D3D11_SDK_VERSION, &_pD3DDevice, &&tFeatureLevel, &_pImmediateContext);
+	res = D3D11CreateDevice(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, flags, NULL, 0, D3D11_SDK_VERSION, &_pD3DDevice, &tFeatureLevel, &_pImmediateContext);
 	if (!_pD3DDevice)
 	{
-		MessageBox(hWnd, "Your graphics card not support dx11");
+		//MessageBox(hWnd, L"Your graphics card not support dx11");
 		exit(0);
 	}
 
-	HRESULT hr = &_pImmediateContext->QueryInterface(__uuidof(_pAnnotation), reinterpret_cast<void**>(&_pAnnotation));
+	HRESULT hr = _pImmediateContext->QueryInterface(__uuidof(_pAnnotation), reinterpret_cast<void**>(&_pAnnotation));
 	assert(SUCCEEDED(hr));
 
 	_pSwapChain = new SWAP_CHAIN(hWnd);
@@ -97,7 +97,7 @@ void RENDER_CONTEXT::Present()
 	}
 }
 
-void RENDER_CONTEXT::Clear(UINT32 flag, FLOAT R, FLOAT g, FLOAT b, FLOAT a, FLOAT z, UINT8 s)
+void RENDER_CONTEXT::Clear(UINT32 flag, FLOAT r, FLOAT g, FLOAT b, FLOAT a, FLOAT z, UINT8 s)
 {
 	if (flag & CF_CLEAR_COLOR)
 	{
@@ -116,7 +116,7 @@ void RENDER_CONTEXT::Clear(UINT32 flag, FLOAT R, FLOAT g, FLOAT b, FLOAT a, FLOA
 		FLOAT clearDepth[4] = {z, z, z, z};
 		if (_pRenderTargets[RCBI_DEPTH_BUFFER])
 		{
-			_pImmediateContext->ClearRenderTargetView(_pRenderTargets[RCBI_DEPTH_BUFFER]->GetRenderTarget(), clearDepth
+            _pImmediateContext->ClearRenderTargetView(_pRenderTargets[RCBI_DEPTH_BUFFER]->GetRenderTarget(), clearDepth);
 		}
 	}
 
@@ -134,11 +134,11 @@ void RENDER_CONTEXT::Clear(UINT32 flag, FLOAT R, FLOAT g, FLOAT b, FLOAT a, FLOA
 			clearFlag |= D3D11_CLEAR_STENCIL;
 		}
 
-		_pImmediateContext->ClearDepthStencilView(_pDepthTarget->GetDpethRenderTarget(), clearFlag, z, s);
+		_pImmediateContext->ClearDepthStencilView(_pDepthTarget->GetDepthRenderTarget(), clearFlag, z, s);
 	}	
 }
 
-void RENDER_CONTEXT::LoadShader(WCHAR* name, std::vector<char>& compiledShader, SIZE_T& size)
+void RENDER_CONTEXT::LoadShader(const WCHAR* name, std::vector<char>& compiledShader, SIZE_T& size)
 {
 	std::ifstream fin(name, std::ifstream::in | std::ifstream::binary);
 
@@ -160,7 +160,7 @@ void RENDER_CONTEXT::CreateVertexShader(WCHAR* path, ID3D11VertexShader** pVerte
 {
 	std::vector<char> compiledShader;
 	SIZE_T size = 0;
-	LoadShader(path, comiledShader, size);
+    LoadShader(path, compiledShader, size);
 	if (!size)
 	{
 		return;
@@ -174,7 +174,7 @@ void RENDER_CONTEXT::CreateVertexShader(const void* bytes, SIZE_T size, ID3D11Ve
 	RENDER_CONTEXT::GetDevice()->CreateVertexShader(bytes, size, NULL, pVertexShader);
 }
 
-void RENDER_CONTEXT::CreatePixelShader(WCHAR* path, ID3D11PixelShader** pPixelShader)
+void RENDER_CONTEXT::CreatePixelShader(const WCHAR* path, ID3D11PixelShader** pPixelShader)
 {
 	// Load the pixel shader file
 	std::vector<char> compiledShader;
@@ -201,12 +201,12 @@ VERTEX_BUFFER* RENDER_CONTEXT::CreateVertexBuffer(UINT32 vertexCount, UINT32 ver
 	return new VERTEX_BUFFER(vertexCount, vertexStride, initData);
 }
 
-RENDER_TARGET* RENDER_CONTEXT::SetCurrentRenderTarget(RENDER_TARGET* renderTarget, UINT32 index)
+void RENDER_CONTEXT::SetCurrentRenderTarget(RENDER_TARGET* renderTarget, UINT32 index)
 {
 	_pRenderTargets[index] = renderTarget;
 }
 
-RENDER_TARGET* RENDER_CONTEXT::GetCurrentRenderTarget(UNINT32 index)
+RENDER_TARGET* RENDER_CONTEXT::GetCurrentRenderTarget(UINT32 index)
 {
 	return _pRenderTargets[index];
 }
@@ -244,12 +244,12 @@ void RENDER_CONTEXT::ApplyRenderTargets()
 	RENDER_CONTEXT::GetImmediateContext()->OMSetRenderTargets(RCBI_BUFFER_MAX, pRenderTargets, pDepthRenderTarget);
 }
 
-void RENDER_TARGET::SetVertexShaderResource(UINT32 statSlot, ID3D11ShaderResourceView* shaderResource)
+void RENDER_CONTEXT::SetVertexShaderResource(UINT32 statSlot, ID3D11ShaderResourceView* shaderResource)
 {
 	_pImmediateContext->VSSetShaderResources(statSlot, 1, &shaderResource);
 }
 
-void RENDER_TARGET::SetPixelShaderResource(UINT32 statSlot, ID3D11ShaderResourceView* shaderResource)
+void RENDER_CONTEXT::SetPixelShaderResource(UINT32 statSlot, ID3D11ShaderResourceView* shaderResource)
 {
 	_pImmediateContext->PSSetShaderResources(statSlot, 1, &shaderResource);
 }
@@ -268,7 +268,7 @@ void RENDER_CONTEXT::DrawPrimitive(D3D11_PRIMITIVE_TOPOLOGY type, UINT32 vertexC
 {
 	_pImmediateContext->IASetPrimitiveTopology(type);
 
-	_pImmediateContext->Draw(vertexcCount, startOffset);
+	_pImmediateContext->Draw(vertexCount, startOffset);
 }
 
 void RENDER_CONTEXT::DrawIndexedPrimitive(D3D11_PRIMITIVE_TOPOLOGY type, UINT32 indexCount, UINT32 startOffset)

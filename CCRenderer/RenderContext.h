@@ -22,10 +22,10 @@ public:
 
 	static void			Clear(UINT32 flag, FLOAT r, FLOAT g, FLOAT b, FLOAT a, FLOAT z, UINT8 s);
 
-	static void			LoadShader(WCHAR* name, std::vector<char>& compiledShader, SIZE_T& size);
-	static void			CreateVertexShader(WCHAR path, ID3D11VertexShader** pVertexShader);
+	static void			LoadShader(const WCHAR* name, std::vector<char>& compiledShader, SIZE_T& size);
+	static void			CreateVertexShader(WCHAR* path, ID3D11VertexShader** pVertexShader);
 	static void			CreateVertexShader(const void* bytes, SIZE_T size, ID3D11VertexShader** pVertexShader);
-	static void			CreatePixelShader(WCHAR* path, ID3D11PixelShader** pPixelShader);
+	static void			CreatePixelShader(const WCHAR* path, ID3D11PixelShader** pPixelShader);
 
 	static VERTEX_BUFFER*		CreateVertexBuffer(UINT32 vertexCount, UINT32 vertexStride, void* initData);
 	static void			ReleaseVertexBuffer(VERTEX_BUFFER* buffer);
@@ -48,7 +48,7 @@ public:
 	static void			PopMarker();
 
 	static ID3D11Device*		GetDevice() { return _pD3DDevice; }
-	static ID3D11DeviceContext*	GetImmediateContex() { return _pImmediateContex; }
+	static ID3D11DeviceContext*	GetImmediateContext() { return _pImmediateContext; }
 	static RENDER_TARGET*		GetFrontBuffer();
 	static RENDER_TARGET*		GetDepthBuffer();
 
@@ -59,7 +59,7 @@ private:
 
 	static HWND			                _hWnd;
 	static ID3D11Device*		        _pD3DDevice;
-	static ID3D11DeviceContext*	        _pImmediateContex;
+	static ID3D11DeviceContext*	        _pImmediateContext;
 	static SWAP_CHAIN*		            _pSwapChain;
 
 	static RENDER_TARGET*		        _pRenderTargets[RCBI_BUFFER_MAX];
