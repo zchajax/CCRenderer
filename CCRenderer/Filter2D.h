@@ -9,7 +9,7 @@ class FILTER2D
 {
 public:
 
-	FILTER2D(WCHAR* pixelShaderPath);
+	FILTER2D(const WCHAR* pixelShaderPath);
 
 	~FILTER2D();
 

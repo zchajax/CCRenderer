@@ -65,7 +65,7 @@ void LightSource::SetViewParams(const XMFLOAT4& Position, const XMFLOAT4& LookAt
 	m_LookAt = LookAt;
 	m_Up = Up;
 
-	calculateViewMatrix();
+	CalculateViewMatrix();
 }
 
 void LightSource::SetProjParams(FLOAT Width,
@@ -78,10 +78,10 @@ void LightSource::SetProjParams(FLOAT Width,
 	m_NearZ = NearZ;
 	m_FarZ = FarZ;
 
-	calculateProjMatrix();
+	CalculateProjMatrix();
 }
 
-void LightSource::calculateViewMatrix()
+void LightSource::CalculateViewMatrix()
 {
 	auto upVector = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 	auto lookVector = XMVector3Normalize(XMLoadFloat4(&m_LookAt) - XMLoadFloat4(&m_Position));
@@ -91,7 +91,7 @@ void LightSource::calculateViewMatrix()
 	XMStoreFloat4x4(&m_LightView, XMMatrixLookAtLH(XMLoadFloat4(&m_Position), XMLoadFloat4(&m_LookAt), upVector));
 }
 
-void LightSource::calculateProjMatrix()
+void LightSource::CalculateProjMatrix()
 {
 	XMStoreFloat4x4(&m_LightProj, XMMatrixOrthographicLH(16, 16, m_NearZ, m_FarZ));
 

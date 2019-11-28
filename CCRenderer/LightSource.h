@@ -68,15 +68,15 @@ private:
         XMFLOAT4 vLightColor;
         XMMATRIX mLightView;
         XMMATRIX mLightProj;
-        FLOAT Shiniess;
+        FLOAT Shininess;
         FLOAT padding1;
         FLOAT padding2;
         FLOAT padding3;
     };
 
-	void CaculateViewMatrix();
+	void CalculateViewMatrix();
 
-	void CaculateProjMatrix();
+	void CalculateProjMatrix();
 
 	ID3D11Buffer*	m_pConstantBuffer;
 

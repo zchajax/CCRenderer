@@ -285,7 +285,7 @@ void CascadedShadowMap::CreateFrustumPointsFromCascadeInterval(float fCascadeInt
 	XMVECTOR* pvCornerPointsWorld)
 {
 
-	XNA::Frustum vViewFrust;
+    XNA::Frustum vViewFrust;
 	ComputeFrustumFromProjection(&vViewFrust, &vProjection);
 	vViewFrust.Near = fCascadeIntervalBegin;
 	vViewFrust.Far = fCascadeIntervalEnd;

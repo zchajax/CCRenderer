@@ -97,6 +97,11 @@ void RENDER_CONTEXT::Present()
 	}
 }
 
+void RENDER_CONTEXT::Reset()
+{
+
+}
+
 void RENDER_CONTEXT::Clear(UINT32 flag, FLOAT r, FLOAT g, FLOAT b, FLOAT a, FLOAT z, UINT8 s)
 {
 	if (flag & CF_CLEAR_COLOR)
@@ -156,7 +161,7 @@ void RENDER_CONTEXT::LoadShader(const WCHAR* name, std::vector<char>& compiledSh
 	fin.close();
 }
 
-void RENDER_CONTEXT::CreateVertexShader(WCHAR* path, ID3D11VertexShader** pVertexShader)
+void RENDER_CONTEXT::CreateVertexShader(const WCHAR* path, ID3D11VertexShader** pVertexShader)
 {
 	std::vector<char> compiledShader;
 	SIZE_T size = 0;

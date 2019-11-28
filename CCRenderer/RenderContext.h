@@ -23,7 +23,7 @@ public:
 	static void			Clear(UINT32 flag, FLOAT r, FLOAT g, FLOAT b, FLOAT a, FLOAT z, UINT8 s);
 
 	static void			LoadShader(const WCHAR* name, std::vector<char>& compiledShader, SIZE_T& size);
-	static void			CreateVertexShader(WCHAR* path, ID3D11VertexShader** pVertexShader);
+	static void			CreateVertexShader(const WCHAR* path, ID3D11VertexShader** pVertexShader);
 	static void			CreateVertexShader(const void* bytes, SIZE_T size, ID3D11VertexShader** pVertexShader);
 	static void			CreatePixelShader(const WCHAR* path, ID3D11PixelShader** pPixelShader);
 

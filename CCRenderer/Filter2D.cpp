@@ -5,7 +5,7 @@
 #include "VertexBuffer.h"
 #include "commonh.h"
 
-FILTER2D::FILTER2D(WCHAR* pixelShaderPath)
+FILTER2D::FILTER2D(const WCHAR* pixelShaderPath)
 {
 	// Create the vertex shader
 	std::vector<char> compiledShader;

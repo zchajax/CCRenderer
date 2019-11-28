@@ -1,9 +1,12 @@
 #include "RenderDoc.h"
 #include "renderdoc_app.h"
 #include <windows.h>
+#include <string> 
+
+extern std::string wstr_to_str(const std::wstring& wstr, UINT CodePage = CP_OEMCP);
 
 static RENDERDOC_API_1_1_2* s_renderdoc{ nullptr };
-#define RENDERDOC_DIRECTORY "./renderdoc"
+#define RENDERDOC_DIRECTORY L"./renderdoc"
 
 void RENDER_DOC::Initialize(bool debug)
 {
@@ -20,7 +23,7 @@ void RENDER_DOC::Initialize(bool debug)
 	}
 	FindClose(findResult);
 
-	s_renderdoc->SetCaptureFilePathTemplate(RENDERDOC_DIRECTORY"/heavyrain_");
+	s_renderdoc->SetCaptureFilePathTemplate(wstr_to_str(RENDERDOC_DIRECTORY"/heavyrain_").c_str());
 	if (debug)
 	{
 		s_renderdoc->SetCaptureOptionU32(eRENDERDOC_Option_DebugDeviceMode, 1);

@@ -54,8 +54,8 @@ void Node::Update(float delta)
 
 	auto& camera = GameApp::getInstance()->getMainCamera();
 	auto world = XMLoadFloat4x4(&m_World);
-	auto view = XMLoadFloat4x4(&camera.getViewMatrix());
-	auto proj = XMLoadFloat4x4(&camera.getProjMatrix());
+	auto view = XMLoadFloat4x4(&camera.GetViewMatrix());
+	auto proj = XMLoadFloat4x4(&camera.GetProjMatrix());
 	auto wvp = world * view * proj;
 
 	XMStoreFloat4x4(&m_Wvp, wvp);

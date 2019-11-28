@@ -2,6 +2,7 @@
 #include "GameApp.h"
 
 TextureManager* TextureManager::m_pInstance = NULL;
+extern const wchar_t* GetWC(const char* c);
 
 TextureManager::TextureManager()
 {
@@ -30,7 +31,7 @@ HRESULT TextureManager::LoadTexture(const char* path)
 	GameApp* app = GameApp::getInstance();
 	
 	ID3D11ShaderResourceView* tempTexture = NULL;
-	hr = app->CreateShaderResourceViewFromFile((path), NULL, NULL, &tempTexture, NULL);
+	hr = app->CreateShaderResourceViewFromFile(GetWC(path), NULL, NULL, &tempTexture, NULL);
 	if (FAILED(hr))
 	{
 		return S_FALSE;

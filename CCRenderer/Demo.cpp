@@ -16,6 +16,7 @@ BOOL			    InitWindows(HINSTANCE, int, HWND*);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 std::string		    wstr_to_str(const std::wstring& wstr, UINT CodePage = CP_OEMCP);
+const wchar_t*      GetWC(const char* c);
 LPSTR*			    CommandLineToArgvA(LPCWSTR lpCmdLine, __out int* pNumArgs);
 
 
@@ -66,6 +67,15 @@ std::string wstr_to_str(const std::wstring& wstr, UINT CodePage)
 
 	delete pchar_str;
 	return str;
+}
+
+const wchar_t* GetWC(const char* c)
+{
+    const size_t cSize = strlen(c) + 1;
+    wchar_t* wc = new wchar_t[cSize];
+    mbstowcs(wc, c, cSize);
+
+    return wc;
 }
 
 LPSTR* CommandLineToArgvA(LPCWSTR lpCmdLine, __out int* pNumArgs)
