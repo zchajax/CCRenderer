@@ -1,3 +1,5 @@
 /.vs
 /CCRenderer/x64
 /x64
+/CCRenderer/thirdpart/fbx/include/.vs
+/CCRenderer/thirdpart/fbx/libs
