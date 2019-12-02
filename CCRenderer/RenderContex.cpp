@@ -99,7 +99,12 @@ void RENDER_CONTEXT::Present()
 
 void RENDER_CONTEXT::Reset()
 {
-
+	for (int i = 0; i < RCBI_BUFFER_MAX; ++i)
+	{
+		_pRenderTargets[i] = NULL;
+	}
+	
+	_pDepthTarget = NULL;
 }
 
 void RENDER_CONTEXT::Clear(UINT32 flag, FLOAT r, FLOAT g, FLOAT b, FLOAT a, FLOAT z, UINT8 s)
