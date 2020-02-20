@@ -30,7 +30,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// Initialize global strings
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-	LoadStringW(hInstance, IDC_MYICON, szWindowClass, MAX_LOADSTRING);
+	LoadStringW(hInstance, IDS_APP_TITLE, szWindowClass, MAX_LOADSTRING);
+
+    if (!MyRegisterClass(hInstance))
+    {
+        return FALSE;
+    }
 
 	// Perform application initialization:
 	if (!InitInstance (hInstance, nCmdShow, lpCmdLine))
@@ -83,13 +88,13 @@ LPSTR* CommandLineToArgvA(LPCWSTR lpCmdLine, __out int* pNumArgs)
 	LPWSTR* szArgList;
 	int argCount;
 
-	if (lpCmdLine)
+	if (!lpCmdLine)
 	{
 		*pNumArgs = 0;
 		return NULL;	
 	}
 
-	szArgList = CommandLineToArgvW(GetCommandLineW(), &argCount);
+	szArgList = CommandLineToArgvW(GetCommandLine(), &argCount);
 	if (szArgList == NULL)
 	{
 		*pNumArgs = 0;
@@ -115,22 +120,23 @@ LPSTR* CommandLineToArgvA(LPCWSTR lpCmdLine, __out int* pNumArgs)
 
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
-	WNDCLASSEXW wcex;
+	WNDCLASSEX wcex;
 
-	wcex.cbSize		    = sizeof(WNDCLASSEXW);
+	wcex.cbSize		    = sizeof(WNDCLASSEX);
+
 	wcex.style		    = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc = WndProc;
 	wcex.cbClsExtra		= 0;
 	wcex.cbWndExtra		= 0;
 	wcex.hInstance		= hInstance;
-	wcex.hIcon		    = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_CCRENDERER));
+    wcex.hIcon          = NULL;
 	wcex.hCursor		= LoadCursor(nullptr, IDC_ARROW);
 	wcex.hbrBackground	= (HBRUSH)(COLOR_WINDOW + 1);
-	wcex.lpszMenuName	= szWindowClass;
-	wcex.lpszClassName	= szWindowClass;
-	wcex.hIconSm		= LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+    wcex.lpszMenuName   = NULL;
+	wcex.lpszClassName	= L"Main";
+    wcex.hIconSm        = NULL;
 
-	return RegisterClassExW(&wcex);
-	
+	return RegisterClassEx(&wcex);
 }
 
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow, LPWSTR lpCmdLine)
@@ -167,8 +173,12 @@ BOOL InitWindows(HINSTANCE hInstance, int nCmdShow, HWND* hWnd)
 
 	AdjustWindowRect(&wr, lStyle, FALSE);
 
-	*hWnd = CreateWindowW(szWindowClass, szTitle, lStyle, CW_USEDEFAULT, CW_USEDEFAULT,
+	*hWnd = CreateWindow(L"Main", L"ASDFADS", lStyle, CW_USEDEFAULT, CW_USEDEFAULT,
 		wr.right - wr.left, wr.bottom - wr.top, nullptr, nullptr, hInstance, nullptr);
+
+
+   auto  errorid =  GetLastError();
+
 
 	if (!(*hWnd))
 	{
