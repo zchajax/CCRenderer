@@ -41,7 +41,7 @@ TEXTURE_DX11::TEXTURE_DX11(
 	_pShaderResourceView(nullptr),
 	_bRenderTarget(bRenderTarget)
 {
-
+    Create();
 }
 
 TEXTURE_DX11::~TEXTURE_DX11()
