@@ -16,6 +16,9 @@
     <Filter Include="Source Files\shaders">
       <UniqueIdentifier>{6f75bfe2-d83a-4def-8703-35322f04dc4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Nodes">
+      <UniqueIdentifier>{8ed1873f-5a9e-428f-8f67-2ae1fbbe137e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -69,9 +72,6 @@
     <ClInclude Include="RenderTarget.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="SkyBox.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Rendering_Pipeline.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -79,15 +79,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="CascadedShadowMap.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Node.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shape.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="FBXLoader.h">
@@ -102,12 +93,6 @@
     <ClInclude Include="RenderDoc.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Plane.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="EventDispatcher.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -116,6 +101,24 @@
     </ClInclude>
     <ClInclude Include="renderdoc_app.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Source Files\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Source Files\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Source Files\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Source Files\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>Source Files\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBox.h">
+      <Filter>Source Files\Nodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -140,9 +143,6 @@
     <ClCompile Include="RenderContex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -152,28 +152,13 @@
     <ClCompile Include="Filter2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shape.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SkyBox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DepthShaderClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CascadedShadowMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Node.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ShadowShaderClass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Plane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Cube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
@@ -196,6 +181,24 @@
     </ClCompile>
     <ClCompile Include="RenderTarget.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Source Files\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Source Files\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>Source Files\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <Filter>Source Files\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyBox.cpp">
+      <Filter>Source Files\Nodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

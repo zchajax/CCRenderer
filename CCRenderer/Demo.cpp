@@ -154,7 +154,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow, LPWSTR lpCmdLine)
 
 	argv = CommandLineToArgvA(lpCmdLine, &argc);
 
-	if (FAILED(!GameApp::getInstance()->Init(hWnd, argc, argv)))
+	if (GameApp::getInstance()->Init(hWnd, argc, argv) != S_OK)
 	{
 		return FALSE;
 	}

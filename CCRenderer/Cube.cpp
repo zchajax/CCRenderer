@@ -10,7 +10,13 @@ Cube* Cube::Create(const char* imagePath)
 
 	if (cube)
 	{
-		cube->Init(imagePath);
+		HRESULT hr = cube->Init(imagePath);
+
+        if (FAILED(hr))
+        {
+            delete cube;
+            return nullptr;
+        }
 	}
 
 	return cube;

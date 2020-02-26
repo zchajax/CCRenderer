@@ -34,7 +34,7 @@ HRESULT TextureManager::LoadTexture(const char* path)
 	hr = app->CreateShaderResourceViewFromFile(GetWC(path), NULL, NULL, &tempTexture, NULL);
 	if (FAILED(hr))
 	{
-		return S_FALSE;
+		return hr;
 	}	
 
 	m_mTextures[path] = tempTexture;

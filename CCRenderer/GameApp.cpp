@@ -107,52 +107,62 @@ HRESULT GameApp::Init(HWND hWnd, int argc, char * argv[])
 	m_ViewPort.TopLeftY = 0;
 
 	// Test
-	Cube* cube1 = Cube::Create("assets/seafloor.dds");
-	cube1->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));
-	AddNode(cube1);
+	//Cube* cube1 = Cube::Create("assets/seafloor.dds");
 
-	Cube* cube2 = Cube::Create("assets/seafloor.dds");
-	cube2->SetPosition(XMFLOAT3(3.5f, 0.0f, 0.0f));
-	AddNode(cube2);
+ //   if (!cube1)
+ //   {
+ //       return S_FALSE;
+ //   }
+	//cube1->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));
+	//AddNode(cube1);
 
-	Cube* cube3 = Cube::Create("assets/seafloor.dds");
-	cube3->SetPosition(XMFLOAT3(16.0f, 0.0f, 10.0f));
-	AddNode(cube3);
+	//Cube* cube2 = Cube::Create("assets/seafloor.dds");
+	//cube2->SetPosition(XMFLOAT3(3.5f, 0.0f, 0.0f));
+	//AddNode(cube2);
 
-	Plane* plane = Plane::Create("assets/terr_dirt-grass.jpg");
-	plane->SetPosition(XMFLOAT3(3.0f, -1.0f, 3.0f));
-	plane->setScale(XMFLOAT3(20.0f, 1.0f, 20.0f));
-	AddNode(plane);
+	//Cube* cube3 = Cube::Create("assets/seafloor.dds");
+	//cube3->SetPosition(XMFLOAT3(16.0f, 0.0f, 10.0f));
+	//AddNode(cube3);
 
-	Model* model1 = Model::Create("assets/Cannon.fbx");
-	model1->SetPosition(XMFLOAT3(1.0f, -1.0f, 3.0f));
-	model1->setRotation(XMFLOAT3(0.0f, -1.8f, 0.0f));
-	model1->setScale(XMFLOAT3(1.5f, 1.5f, 1.5f));
-	AddNode(model1);
+	//Plane* plane = Plane::Create("assets/terr_dirt-grass.jpg");
+	//plane->SetPosition(XMFLOAT3(3.0f, -1.0f, 3.0f));
+	//plane->setScale(XMFLOAT3(20.0f, 1.0f, 20.0f));
+	//AddNode(plane);
 
-	Model* model2 = Model::Create("assets/Cannon.fbx");
-	model2->SetPosition(XMFLOAT3(3.0f, -1.0f, 8.0f));
-	model2->setRotation(XMFLOAT3(0.0f, 0.0f, 0.0f));
-	model2->setScale(XMFLOAT3(1.5f, 1.5f, 1.5f));
-	AddNode(model2);
+	//Model* model1 = Model::Create("assets/Cannon.fbx");
+	//model1->SetPosition(XMFLOAT3(1.0f, -1.0f, 3.0f));
+	//model1->setRotation(XMFLOAT3(0.0f, -1.8f, 0.0f));
+	//model1->setScale(XMFLOAT3(1.5f, 1.5f, 1.5f));
+	//AddNode(model1);
 
-	Model* model3 = Model::Create("assets/Cannon.fbx");
-	model3->SetPosition(XMFLOAT3(6.0f, -1.0f, 13.0f));
-	model3->setRotation(XMFLOAT3(0.0f, 1.8f, 0.0f));
-	model3->setScale(XMFLOAT3(1.5f, 1.5f, 1.5f));
-	AddNode(model3);
+	//Model* model2 = Model::Create("assets/Cannon.fbx");
+	//model2->SetPosition(XMFLOAT3(3.0f, -1.0f, 8.0f));
+	//model2->setRotation(XMFLOAT3(0.0f, 0.0f, 0.0f));
+	//model2->setScale(XMFLOAT3(1.5f, 1.5f, 1.5f));
+	//AddNode(model2);
 
-	Model* model4 = Model::Create("assets/Cannon.fbx");
-	model4->SetPosition(XMFLOAT3(10.0f, -1.0f, -5.0f));
-	model4->setRotation(XMFLOAT3(0.0f, 0.8f, 0.0f));
-	model4->setScale(XMFLOAT3(1.5f, 1.5f, 1.5f));
-	AddNode(model4);
+	//Model* model3 = Model::Create("assets/Cannon.fbx");
+	//model3->SetPosition(XMFLOAT3(6.0f, -1.0f, 13.0f));
+	//model3->setRotation(XMFLOAT3(0.0f, 1.8f, 0.0f));
+	//model3->setScale(XMFLOAT3(1.5f, 1.5f, 1.5f));
+	//AddNode(model3);
 
-	Model* model5 = Model::Create("assets/Cannon.fbx");
-	model5->SetPosition(XMFLOAT3(-6.0f, -1.0f, -13.0f));
-	model5->setRotation(XMFLOAT3(0.0f, 2.1f, 0.0f));
-	model5->setScale(XMFLOAT3(1.5f, 1.5f, 1.5f));
-	AddNode(model5);
+	//Model* model4 = Model::Create("assets/Cannon.fbx");
+	//model4->SetPosition(XMFLOAT3(10.0f, -1.0f, -5.0f));
+	//model4->setRotation(XMFLOAT3(0.0f, 0.8f, 0.0f));
+	//model4->setScale(XMFLOAT3(1.5f, 1.5f, 1.5f));
+	//AddNode(model4);
+
+	//Model* model5 = Model::Create("assets/Cannon.fbx");
+	//model5->SetPosition(XMFLOAT3(-6.0f, -1.0f, -13.0f));
+	//model5->setRotation(XMFLOAT3(0.0f, 2.1f, 0.0f));
+	//model5->setScale(XMFLOAT3(1.5f, 1.5f, 1.5f));
+	//AddNode(model5);
+
+    Plane* plane = Plane::Create("assets/test.dds");
+    plane->SetPosition(XMFLOAT3(3.0f, -1.0f, 3.0f));
+    plane->setScale(XMFLOAT3(20.0f, 1.0f, 20.0f));
+    AddNode(plane);
 
 	// Initialize camera
 	m_Camera.Init();
@@ -314,7 +324,7 @@ void GameApp::RenderScene()
 	m_LightSource.Render();
 
 	// Render skybox
-	m_SkyBox.Render();
+	//m_SkyBox.Render();
 
 	// Init Frame
 	m_pCascadedShadowMap->PrepareRenderWithShadowMap(RENDER_CONTEXT::GetImmediateContext());

@@ -12,7 +12,13 @@ Model* Model::Create(const char* filename)
 
 	if (model)
 	{
-		model->Init(filename);
+		HRESULT hr = model->Init(filename);
+
+        if (FAILED(hr))
+        {
+            delete model;
+            return nullptr;
+        }
 	}
 
 	return model;

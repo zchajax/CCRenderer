@@ -9,7 +9,7 @@ HRESULT Texture::Create(const char* path, Texture** texture)
 	if (FAILED(hr))
 	{
 		delete temp;
-		return S_FALSE;	
+		return hr;
 	}
 
 	*texture = temp;

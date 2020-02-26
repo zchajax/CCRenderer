@@ -10,7 +10,14 @@ Plane* Plane::Create(const char* imagePath)
 
 	if (plane)
 	{
-		plane->Init(imagePath);
+		HRESULT hr = plane->Init(imagePath);
+
+        if (FAILED(hr))
+        {
+            delete plane;
+
+            return nullptr;
+        }
 	}
 
 	return plane;
