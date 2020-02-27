@@ -1,6 +1,8 @@
 #include "Texture.h"
 #include "TextureManager.h"
 
+extern bool IsFileExists(const std::string& name);
+
 HRESULT Texture::Create(const char* path, Texture** texture)
 {
 	Texture* temp = new Texture();
@@ -29,9 +31,16 @@ Texture::~Texture()
 
 HRESULT Texture::Init(const char* path)
 {
-	m_sPath = path;
+    if (IsFileExists(path))
+    {
+        m_sPath = path;
+    }
+    else
+    {
+        m_sPath = "assets/default.bmp";
+    }
 
-	return TextureManager::GetInstance()->LoadTexture(path);
+    return TextureManager::GetInstance()->LoadTexture(m_sPath.c_str());
 }
 
 void Texture::Release()

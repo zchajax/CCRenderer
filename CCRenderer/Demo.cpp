@@ -83,6 +83,20 @@ const wchar_t* GetWC(const char* c)
     return wc;
 }
 
+bool IsFileExists(const std::string& name)
+{
+    if (FILE* file = fopen(name.c_str(), "r"))
+    {
+        fclose(file);
+        return true;
+    }
+    else 
+    {
+        return false;
+    }
+}
+
+
 LPSTR* CommandLineToArgvA(LPCWSTR lpCmdLine, __out int* pNumArgs)
 {
 	LPWSTR* szArgList;

@@ -107,7 +107,7 @@ HRESULT GameApp::Init(HWND hWnd, int argc, char * argv[])
 	m_ViewPort.TopLeftY = 0;
 
 	// Test
-	Cube* cube1 = Cube::Create("assets/test.dds");
+	Cube* cube1 = Cube::Create("assets/tes12t.dds");
 	cube1->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));
 	AddNode(cube1);
 
