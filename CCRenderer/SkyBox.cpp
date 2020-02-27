@@ -157,9 +157,9 @@ HRESULT SkyBox::Init(ID3D11Device* device)
 	if (FAILED(hr))
 		return hr;
 
-	hr = GameApp::getInstance()->CreateShaderResourceViewFromFile(L"assets/irradiance.dds", NULL, NULL, &m_pIrradianceMap, NULL);
+	/*hr = GameApp::getInstance()->CreateShaderResourceViewFromFile(L"assets/irradiance.dds", NULL, NULL, &m_pIrradianceMap, NULL);
 	if (FAILED(hr))
-		abort();
+        return hr;
 
 	hr = app->CreateShaderResourceViewFromFile(L"assets/mipmaps.dds", NULL, NULL, &m_pFilterMipmap, NULL);
 	if (FAILED(hr))
@@ -167,7 +167,7 @@ HRESULT SkyBox::Init(ID3D11Device* device)
 
 	hr = app->CreateShaderResourceViewFromFile(L"assets/brdf.dds", NULL, NULL, &m_pBrdfMap, NULL);
 	if (FAILED(hr))
-		return hr;
+		return hr;*/
 
 	// Create the sample state
 	D3D11_SAMPLER_DESC sampDesc;

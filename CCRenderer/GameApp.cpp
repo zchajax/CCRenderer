@@ -324,7 +324,7 @@ void GameApp::RenderScene()
 	m_LightSource.Render();
 
 	// Render skybox
-	//m_SkyBox.Render();
+	m_SkyBox.Render();
 
 	// Init Frame
 	m_pCascadedShadowMap->PrepareRenderWithShadowMap(RENDER_CONTEXT::GetImmediateContext());
