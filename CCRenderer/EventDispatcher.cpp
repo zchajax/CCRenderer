@@ -186,34 +186,41 @@ void EventDispatcher::Update(float delta)
 	float offsetY = 0.0f;
 	float offsetZ = 0.0f;
 
+    float speed = SPEED;
+
+    if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+    {
+        speed *= 10;
+    }
+
 	if (GetAsyncKeyState('W') & 0x8000)
 	{
-		offsetZ += SPEED * delta;
+		offsetZ += speed * delta;
 	}
 
 	if (GetAsyncKeyState('S') & 0x8000)
 	{
-		offsetZ -= SPEED * delta;
+		offsetZ -= speed * delta;
 	}
 
 	if (GetAsyncKeyState('A') & 0x8000)
 	{
-		offsetX -= SPEED * delta;
+		offsetX -= speed * delta;
 	}
 
 	if (GetAsyncKeyState('D') & 0x8000)
 	{
-		offsetX += SPEED * delta;
+		offsetX += speed * delta;
 	}
 
 	if (GetAsyncKeyState('Q') & 0x8000)
 	{
-		offsetY += SPEED * delta;
+		offsetY -= speed * delta;
 	}
 
 	if (GetAsyncKeyState('E') & 0x8000)
 	{
-		offsetY -= SPEED * delta;
+		offsetY += speed * delta;
 	}
 
 	if (offsetX || offsetY || offsetZ)
