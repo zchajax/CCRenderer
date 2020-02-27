@@ -107,27 +107,22 @@ HRESULT GameApp::Init(HWND hWnd, int argc, char * argv[])
 	m_ViewPort.TopLeftY = 0;
 
 	// Test
-	//Cube* cube1 = Cube::Create("assets/seafloor.dds");
+	Cube* cube1 = Cube::Create("assets/test.dds");
+	cube1->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));
+	AddNode(cube1);
 
- //   if (!cube1)
- //   {
- //       return S_FALSE;
- //   }
-	//cube1->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));
-	//AddNode(cube1);
+	Cube* cube2 = Cube::Create("assets/test.dds");
+	cube2->SetPosition(XMFLOAT3(3.5f, 0.0f, 0.0f));
+	AddNode(cube2);
 
-	//Cube* cube2 = Cube::Create("assets/seafloor.dds");
-	//cube2->SetPosition(XMFLOAT3(3.5f, 0.0f, 0.0f));
-	//AddNode(cube2);
+	Cube* cube3 = Cube::Create("assets/test.dds");
+	cube3->SetPosition(XMFLOAT3(16.0f, 0.0f, 10.0f));
+	AddNode(cube3);
 
-	//Cube* cube3 = Cube::Create("assets/seafloor.dds");
-	//cube3->SetPosition(XMFLOAT3(16.0f, 0.0f, 10.0f));
-	//AddNode(cube3);
-
-	//Plane* plane = Plane::Create("assets/terr_dirt-grass.jpg");
-	//plane->SetPosition(XMFLOAT3(3.0f, -1.0f, 3.0f));
-	//plane->setScale(XMFLOAT3(20.0f, 1.0f, 20.0f));
-	//AddNode(plane);
+	Plane* plane = Plane::Create("assets/test.dds");
+	plane->SetPosition(XMFLOAT3(3.0f, -1.0f, 3.0f));
+	plane->setScale(XMFLOAT3(20.0f, 1.0f, 20.0f));
+	AddNode(plane);
 
 	//Model* model1 = Model::Create("assets/Cannon.fbx");
 	//model1->SetPosition(XMFLOAT3(1.0f, -1.0f, 3.0f));
@@ -158,11 +153,6 @@ HRESULT GameApp::Init(HWND hWnd, int argc, char * argv[])
 	//model5->setRotation(XMFLOAT3(0.0f, 2.1f, 0.0f));
 	//model5->setScale(XMFLOAT3(1.5f, 1.5f, 1.5f));
 	//AddNode(model5);
-
-    Plane* plane = Plane::Create("assets/test.dds");
-    plane->SetPosition(XMFLOAT3(3.0f, -1.0f, 3.0f));
-    plane->setScale(XMFLOAT3(20.0f, 1.0f, 20.0f));
-    AddNode(plane);
 
 	// Initialize camera
 	m_Camera.Init();
