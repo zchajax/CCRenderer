@@ -8,6 +8,7 @@
 HWND RENDER_CONTEXT::_hWnd = 0;
 ID3D11Device* RENDER_CONTEXT::_pD3DDevice = nullptr;
 ID3D11DeviceContext* RENDER_CONTEXT::_pImmediateContext = nullptr;
+ID3D11RasterizerState* RENDER_CONTEXT::_pRasterizerState = nullptr;
 SWAP_CHAIN* RENDER_CONTEXT::_pSwapChain = nullptr;
 ID3DUserDefinedAnnotation* RENDER_CONTEXT::_pAnnotation = nullptr;
 UINT32 RENDER_CONTEXT::_uiWidth = 0;
@@ -47,6 +48,22 @@ void RENDER_CONTEXT::Init(HWND hWnd, UINT32 uiWidth, UINT32 uiHeight)
 	assert(SUCCEEDED(hr));
 
 	_pSwapChain = new SWAP_CHAIN(hWnd);
+
+    // Create rasterizerState
+    D3D11_RASTERIZER_DESC _rasterDesc;
+    ZeroMemory(&_rasterDesc, sizeof(D3D11_RASTERIZER_DESC));
+    _rasterDesc.AntialiasedLineEnable = false;
+    _rasterDesc.CullMode = D3D11_CULL_BACK;
+    _rasterDesc.DepthBias = 0;
+    _rasterDesc.DepthBiasClamp = 0.0f;
+    _rasterDesc.DepthClipEnable = true;
+    _rasterDesc.FillMode = D3D11_FILL_SOLID;
+    _rasterDesc.FrontCounterClockwise = false;
+    _rasterDesc.MultisampleEnable = false;
+    _rasterDesc.ScissorEnable = false;
+    _rasterDesc.SlopeScaledDepthBias = 0.0f;
+    hr = _pD3DDevice->CreateRasterizerState(&_rasterDesc, &_pRasterizerState);
+    assert(SUCCEEDED(hr));
 }
 
 void RENDER_CONTEXT::Exit()

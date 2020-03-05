@@ -294,11 +294,13 @@ void GameApp::RenderShadowMap()
 
 void GameApp::RenderScene()
 {
-	RENDER_CONTEXT::PushMarker(MARK("NormalPass"));
+	RENDER_CONTEXT::PushMarker(MARK("BasePass"));
 
 	RENDER_CONTEXT::GetImmediateContext()->RSSetViewports(1, &m_ViewPort);
 
-	RENDER_CONTEXT::SetCurrentRenderTarget(RENDER_CONTEXT::GetFrontBuffer());
+    RENDER_CONTEXT::GetImmediateContext()->RSSetState(RENDER_CONTEXT::GetRasterizerState());
+
+	//RENDER_CONTEXT::SetCurrentRenderTarget(RENDER_CONTEXT::GetFrontBuffer());
 	RENDER_CONTEXT::SetCurrentDepthTarget(RENDER_CONTEXT::GetDepthBuffer());
 	RENDERING_PIPELINE::SetTargetOutputColor();
 	RENDERING_PIPELINE::SetTargetOutputDepth();

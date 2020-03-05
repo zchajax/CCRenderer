@@ -49,6 +49,7 @@ public:
 
 	static ID3D11Device*		GetDevice() { return _pD3DDevice; }
 	static ID3D11DeviceContext*	GetImmediateContext() { return _pImmediateContext; }
+    static ID3D11RasterizerState* GetRasterizerState() { return _pRasterizerState; }
 	static RENDER_TARGET*		GetFrontBuffer();
 	static RENDER_TARGET*		GetDepthBuffer();
 
@@ -61,6 +62,7 @@ private:
 	static ID3D11Device*		        _pD3DDevice;
 	static ID3D11DeviceContext*	        _pImmediateContext;
 	static SWAP_CHAIN*		            _pSwapChain;
+    static ID3D11RasterizerState*       _pRasterizerState;
 
 	static RENDER_TARGET*		        _pRenderTargets[RCBI_BUFFER_MAX];
 	static RENDER_TARGET*		        _pDepthTarget;
