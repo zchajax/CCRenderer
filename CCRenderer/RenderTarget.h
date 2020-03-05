@@ -10,6 +10,7 @@ public:
 		UINT32		uiWidth,
 		UINT32		uiHeight,
 		DXGI_FORMAT	eFormat,
+        UINT8       sampleCount,
 		BOOL		isEmptyTarget
 	);
 
@@ -38,6 +39,7 @@ private:
 	UINT32				_uiWidth;
 	UINT32				_uiHeight;
 	DXGI_FORMAT			_Format;
+    UINT8               _SampleCount;
 	BOOL				_bIsDepth;
 	BOOL				_bIsEmptyTarget;
 

@@ -65,7 +65,7 @@ void CascadedShadowMap::Init(UINT width, UINT height)
 
 	for (int i = 0; i < MAX_CASCADED; i++)
 	{
-		m_RenderTargets[i] = new RENDER_TARGET(width, height, depthMapDesc.Format, true);
+		m_RenderTargets[i] = new RENDER_TARGET(width, height, depthMapDesc.Format, 1, true);
 		m_RenderTargets[i]->_pTexture->_pD3DTexture = m_pDepthTexture2D;
 
 		rtvDesc.Texture2DArray.FirstArraySlice = i;
@@ -89,7 +89,7 @@ void CascadedShadowMap::Init(UINT width, UINT height)
 		abort();
 	}
 
-	m_pDepthTarget = new RENDER_TARGET(width, height, DXGI_FORMAT_R32_TYPELESS, false);
+	m_pDepthTarget = new RENDER_TARGET(width, height, DXGI_FORMAT_R32_TYPELESS, 1, false);
 
 	RENDER_CONTEXT::CreateVertexShader(const_cast<WCHAR*>(L"shaders/CascadedDepth_vs.cso"), &m_pVertexShader);
 	RENDER_CONTEXT::CreatePixelShader(const_cast<WCHAR*>(L"shaders/CascadedDepth_ps.cso"), &m_pPixelShader);

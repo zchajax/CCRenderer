@@ -7,11 +7,12 @@ public:
 
 	TEXTURE_DX11();
 	
-	TEXTURE_DX11(
-		UINT32		uiWidth,
-		UINT32		uiHeight,
-		DXGI_FORMAT	eFormat,
-		UINT32		nMipMapLevels,
+    TEXTURE_DX11(
+        UINT32		uiWidth,
+        UINT32		uiHeight,
+        DXGI_FORMAT	eFormat,
+        UINT32		nMipMapLevels,
+        UINT8       sampleCount,
 		BOOL		bRenderTarget	
 	);
 
@@ -26,7 +27,9 @@ public:
 	ID3D11ShaderResourceView*   GetShaderResource() { return _pShaderResourceView; }
 
 	UINT32			            GetWidth() { return _uiWidth; }
-    UINT32			            GetHeight() { return _uiWidth; }
+    UINT32			            GetHeight() { return _uiHeight; }
+    DXGI_FORMAT                 GetFormat() { return _Format; }
+    UINT32                      GetMipMapLevels() { return _uiMipMapLevels; }
 
 private:
 
@@ -40,6 +43,7 @@ private:
 	UINT32			            _uiHeight;
 	DXGI_FORMAT		            _Format;
 	UINT32			            _uiMipMapLevels;
+    UINT8                       _uiSampleCount;
 
 	D3D11_FILTER		        _Filter;
 	D3D11_TEXTURE_ADDRESS_MODE  _AddressU;

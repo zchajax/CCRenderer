@@ -56,7 +56,7 @@ void SWAP_CHAIN::Create()
 	hr = dxgiFactory->CreateSwapChain(RENDER_CONTEXT::GetDevice(), &sd, &m_pSwapChain);
 	assert(SUCCEEDED(hr));
 
-	m_pFrontBuffer = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_B8G8R8A8_UNORM, true);
+	m_pFrontBuffer = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_B8G8R8A8_UNORM, 1, true);
     m_pFrontBuffer->_pTexture->_uiWidth = RENDER_CONTEXT::GetWidth();
 	m_pFrontBuffer->_pTexture->_uiHeight = RENDER_CONTEXT::GetHeight();
 	m_pFrontBuffer->_pTexture->_Format = DXGI_FORMAT_B8G8R8A8_UNORM;
@@ -69,7 +69,7 @@ void SWAP_CHAIN::Create()
 	assert(SUCCEEDED(hr));
 
 	// create depth render target
-	m_pDepthBuffer = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_R32G8X24_TYPELESS, false);
+	m_pDepthBuffer = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_R32G8X24_TYPELESS, 4, false);
 	assert(SUCCEEDED(hr));
 	
 }

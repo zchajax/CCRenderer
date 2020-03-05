@@ -1,5 +1,7 @@
 #pragma once
 
+#define MSAA_COUNT 4;
+
 typedef enum _CLEAR_FLAGS
 {
 	CF_CLEAR_COLOR	 = 1 << 0,

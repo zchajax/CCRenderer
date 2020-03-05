@@ -21,16 +21,18 @@ TEXTURE_DX11::TEXTURE_DX11() :
 }
 
 TEXTURE_DX11::TEXTURE_DX11(
-	UINT32		uiWidth,
-	UINT32		uiHeight,
-	DXGI_FORMAT	eFormat,
-	UINT32		nMipMapLevels,
-	BOOL		bRenderTarget
-) : 
-	_uiWidth(uiWidth),
-	_uiHeight(uiHeight),
-	_Format(eFormat),
-	_uiMipMapLevels(nMipMapLevels),
+    UINT32		uiWidth,
+    UINT32		uiHeight,
+    DXGI_FORMAT	eFormat,
+    UINT32		nMipMapLevels,
+    UINT8       sampleCount,
+    BOOL		bRenderTarget
+) :
+    _uiWidth(uiWidth),
+    _uiHeight(uiHeight),
+    _Format(eFormat),
+    _uiMipMapLevels(nMipMapLevels),
+    _uiSampleCount(sampleCount),
 	_Filter(D3D11_FILTER_ANISOTROPIC),
 	_AddressU(D3D11_TEXTURE_ADDRESS_WRAP),
 	_AddressV(D3D11_TEXTURE_ADDRESS_WRAP),
@@ -58,7 +60,7 @@ void TEXTURE_DX11::Create()
 	desc.MipLevels = _uiMipMapLevels;
 	desc.ArraySize = 1;
 	desc.Format = _Format;
-	desc.SampleDesc.Count = 1;
+	desc.SampleDesc.Count = _uiSampleCount;
 	desc.SampleDesc.Quality = 0;
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.CPUAccessFlags = 0;
@@ -87,9 +89,17 @@ void TEXTURE_DX11::Create()
 	assert(SUCCEEDED(hr));
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
-	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = _uiMipMapLevels;
 	srvDesc.Texture2D.MostDetailedMip = 0;
+
+    if (_uiSampleCount > 1)
+    {
+        srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DMS;
+    }
+    else
+    {
+        srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+    }
 
 	if (desc.BindFlags & D3D11_BIND_DEPTH_STENCIL)
 	{

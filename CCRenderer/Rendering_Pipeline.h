@@ -32,11 +32,18 @@ public:
 		return _pTargetNormal;
 	}
 
+    static RENDER_TARGET* GetResolveTarget()
+    {
+        return _pResolveTarget;
+    }
+
 private:
 
 	static RENDER_TARGET*		_pTargetColor;
 	static RENDER_TARGET*		_pTargetDepth;
 	static RENDER_TARGET*		_pTargetNormal;
+
+    static RENDER_TARGET*       _pResolveTarget;
 
 	static FILTER2D*			_pGammaCorrection;
 };

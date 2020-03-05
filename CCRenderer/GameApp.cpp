@@ -1,6 +1,7 @@
 #include "GameApp.h"
 #include "RenderContext.h"
 #include "RenderTarget.h"
+#include "Texture_DX11.h"
 #include "Cube.h"
 #include "Plane.h"
 #include "Model.h"
@@ -29,6 +30,20 @@ static inline void CheckDebugDeviceCmdArgs(int argc, char* argv[])
 			break;
 		}
 	}
+}
+
+#define ENABLE_MSAA_CMD_ARGS "-msaa"
+bool gEnableMSAA = false;
+static inline void CheckMsaaCmdArgs(int argc, char* argv[])
+{
+    for (int i = 0; i < argc; ++i)
+    {
+        if (strcmp(ENABLE_MSAA_CMD_ARGS, argv[i]) == 0)
+        {
+            gEnableMSAA = true;
+            break;
+        }
+    }
 }
 
 #define ENABLE_RENDERDOC_CMD_ARGS "-renderdoc"
@@ -78,6 +93,7 @@ HRESULT GameApp::Init(HWND hWnd, int argc, char * argv[])
 	m_hWnd = hWnd;
 
 	CheckDebugDeviceCmdArgs(argc, argv);
+    CheckMsaaCmdArgs(argc, argv);
 	CheckRenderDocCmdArgs(argc, argv);
 
 	if (gEnableRenderDoc)
@@ -303,8 +319,8 @@ void GameApp::RenderScene()
 	//RENDER_CONTEXT::SetCurrentRenderTarget(RENDER_CONTEXT::GetFrontBuffer());
 	RENDER_CONTEXT::SetCurrentDepthTarget(RENDER_CONTEXT::GetDepthBuffer());
 	RENDERING_PIPELINE::SetTargetOutputColor();
-	RENDERING_PIPELINE::SetTargetOutputDepth();
-	RENDERING_PIPELINE::SetTargetOutputNormal();
+	/*RENDERING_PIPELINE::SetTargetOutputDepth();
+	RENDERING_PIPELINE::SetTargetOutputNormal();*/
 	RENDER_CONTEXT::ApplyRenderTargets();
 
 	RENDER_CONTEXT::Clear(CF_CLEAR_COLOR | CF_CLEAR_ZBUFFER, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0);
@@ -331,6 +347,16 @@ void GameApp::RenderScene()
 	{
 		(*iter)->RenderShadowMap();
 	}
+
+    TEXTURE_DX11* srcTexture = RENDER_CONTEXT::GetCurrentRenderTarget()->GetTexture();
+
+    TEXTURE_DX11* resolveTexture = RENDERING_PIPELINE::GetResolveTarget()->GetTexture();
+
+
+
+    RENDER_CONTEXT::GetImmediateContext()->ResolveSubresource(resolveTexture->GetD3DTexture(), 0, srcTexture->GetD3DTexture(), 0, srcTexture->GetFormat());
+
+    RENDER_CONTEXT::SetCurrentRenderTarget(RENDERING_PIPELINE::GetResolveTarget());
 
 	RENDER_CONTEXT::PopMarker();
 }
