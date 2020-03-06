@@ -63,8 +63,8 @@ void RENDER_CONTEXT::Init(HWND hWnd, UINT32 uiWidth, UINT32 uiHeight)
     _rasterDesc.ScissorEnable = false;
     _rasterDesc.SlopeScaledDepthBias = 0.0f;
 
-    extern bool gEnableRenderDoc;
-    if (gEnableRenderDoc)
+    extern bool gEnableMSAA;
+    if (gEnableMSAA)
     {
         _rasterDesc.AntialiasedLineEnable = true;
         _rasterDesc.MultisampleEnable = true;

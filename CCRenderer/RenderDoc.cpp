@@ -23,7 +23,7 @@ void RENDER_DOC::Initialize(bool debug)
 	}
 	FindClose(findResult);
 
-	s_renderdoc->SetCaptureFilePathTemplate(wstr_to_str(RENDERDOC_DIRECTORY"/heavyrain_").c_str());
+	s_renderdoc->SetCaptureFilePathTemplate(wstr_to_str(RENDERDOC_DIRECTORY"/ccrenderer_").c_str());
 	if (debug)
 	{
 		s_renderdoc->SetCaptureOptionU32(eRENDERDOC_Option_DebugDeviceMode, 1);

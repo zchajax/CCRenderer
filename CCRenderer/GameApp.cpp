@@ -348,22 +348,21 @@ void GameApp::RenderScene()
 		(*iter)->RenderShadowMap();
 	}
 
-    TEXTURE_DX11* srcTexture = RENDER_CONTEXT::GetCurrentRenderTarget()->GetTexture();
+    extern bool gEnableMSAA;
 
-    TEXTURE_DX11* resolveTexture = RENDERING_PIPELINE::GetResolveTarget()->GetTexture();
-
-
-
-    RENDER_CONTEXT::GetImmediateContext()->ResolveSubresource(resolveTexture->GetD3DTexture(), 0, srcTexture->GetD3DTexture(), 0, srcTexture->GetFormat());
-
-    RENDER_CONTEXT::SetCurrentRenderTarget(RENDERING_PIPELINE::GetResolveTarget());
+    if (gEnableMSAA)
+    {
+        RENDERING_PIPELINE::Resolve();
+    }
 
 	RENDER_CONTEXT::PopMarker();
 }
 
 void GameApp::PostProcessing()
 {
+    RENDER_CONTEXT::PushMarker(MARK("Post-Processing"));
 	RENDERING_PIPELINE::GammaCorrection();
+    RENDER_CONTEXT::PopMarker();
 }
 
 void GameApp::Clear()

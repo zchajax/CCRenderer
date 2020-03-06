@@ -2,6 +2,8 @@
 #include "RenderContext.h"
 #include "RenderTarget.h"
 #include "Filter2D.h"
+#include "Texture_DX11.h"
+#include "RenderDefs.h"
 
 RENDER_TARGET* RENDERING_PIPELINE::_pTargetColor = NULL;
 RENDER_TARGET* RENDERING_PIPELINE::_pTargetDepth = NULL;
@@ -11,7 +13,10 @@ FILTER2D* RENDERING_PIPELINE::_pGammaCorrection = NULL;
 
 void RENDERING_PIPELINE::Init()
 {
-	_pTargetColor = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_B8G8R8A8_UNORM, 4, false);
+    extern bool gEnableMSAA;
+    UINT8 sampleCount = gEnableMSAA ? MSAA_COUNT : 1;
+
+	_pTargetColor = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_B8G8R8A8_UNORM, sampleCount, false);
 	/*_pTargetDepth = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_R32_FLOAT, false);
 	_pTargetNormal = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_B8G8R8A8_UNORM, false);*/
 
@@ -51,10 +56,25 @@ void RENDERING_PIPELINE::Release()
     }
 }
 
+void RENDERING_PIPELINE::Resolve()
+{
+    TEXTURE_DX11* srcTexture = RENDER_CONTEXT::GetCurrentRenderTarget()->GetTexture();
+
+    TEXTURE_DX11* resolveTexture = _pResolveTarget->GetTexture();
+
+    RENDER_CONTEXT::GetImmediateContext()->ResolveSubresource(resolveTexture->GetD3DTexture(), 0, srcTexture->GetD3DTexture(), 0, srcTexture->GetFormat());
+
+    RENDER_CONTEXT::SetCurrentRenderTarget(_pResolveTarget);
+}
+
 void RENDERING_PIPELINE::GammaCorrection()
 {
+    RENDER_CONTEXT::PushMarker(MARK("Gamma Correction"));
+
 	_pGammaCorrection->Init(RENDER_CONTEXT::GetCurrentRenderTarget(RCBI_COLOR_BUFFER)->GetTexture(), RENDER_CONTEXT::GetFrontBuffer());
 	_pGammaCorrection->Apply();
+
+    RENDER_CONTEXT::PopMarker();
 }
 
 void RENDERING_PIPELINE::SetTargetOutputColor()

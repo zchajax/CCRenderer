@@ -69,9 +69,10 @@ void SWAP_CHAIN::Create()
 	assert(SUCCEEDED(hr));
 
 	// create depth render target
-	m_pDepthBuffer = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_R32G8X24_TYPELESS, 4, false);
+    extern bool gEnableMSAA;
+    UINT8 sampleCount = gEnableMSAA ? MSAA_COUNT : 1;
+	m_pDepthBuffer = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_R32G8X24_TYPELESS, sampleCount, false);
 	assert(SUCCEEDED(hr));
-	
 }
 
 void SWAP_CHAIN::Release()

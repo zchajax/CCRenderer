@@ -11,6 +11,8 @@ public:
 	static void					Init();
 	static void					Release();
 
+    static void                 Resolve();
+
 	static void					GammaCorrection();
 
 	static void					SetTargetOutputColor();

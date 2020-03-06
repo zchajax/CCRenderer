@@ -1,6 +1,6 @@
 #pragma once
 
-#define MSAA_COUNT 4;
+#define MSAA_COUNT 4
 
 typedef enum _CLEAR_FLAGS
 {
