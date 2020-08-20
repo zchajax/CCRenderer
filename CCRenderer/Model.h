@@ -1,8 +1,9 @@
 #pragma once
 
 #include "FBXLoader.h"
-#include <xnamath.h>
 #include "Node.h"
+#include <DirectXMath.h>
+using namespace DirectX;
 
 class Texture;
 class Model : public Node

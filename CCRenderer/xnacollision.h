@@ -13,7 +13,8 @@
 #define _XNA_COLLISION_H_
 
 #include <d3d11_1.h>
-#include <xnamath.h>
+#include <DirectXMath.h>
+using namespace DirectX;
 
 namespace XNA
 {
@@ -29,7 +30,7 @@ namespace XNA
 #pragma warning(push)
 #pragma warning(disable: 4324)
 
-_DECLSPEC_ALIGN_16_ struct Frustum
+__declspec(align(16)) struct Frustum
 {
     XMFLOAT3 Origin;            // Origin of the frustum (and projection).
     XMFLOAT4 Orientation;       // Unit quaternion representing rotation.

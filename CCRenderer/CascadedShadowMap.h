@@ -1,9 +1,10 @@
 #pragma once
 
 #include <d3d11_1.h>
-#include <xnamath.h>
 #include "commonh.h"
 #include "xnacollision.h"
+#include <DirectXMath.h>
+using namespace DirectX;
 
 class RENDER_TARGET;
 class Camera;

@@ -1,6 +1,7 @@
 #pragma once
 
-#include <xnamath.h>
+#include <DirectXMath.h>
+using namespace DirectX;
 
 #define MAX_CASCADED 8
 

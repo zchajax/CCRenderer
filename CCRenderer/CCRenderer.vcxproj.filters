@@ -96,9 +96,6 @@
     <ClInclude Include="EventDispatcher.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="xnacollision.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="renderdoc_app.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -119,6 +116,9 @@
     </ClInclude>
     <ClInclude Include="SkyBox.h">
       <Filter>Source Files\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="xnacollision.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -176,9 +176,6 @@
     <ClCompile Include="EventDispatcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="xnacollision.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RenderTarget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -199,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="SkyBox.cpp">
       <Filter>Source Files\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="xnacollision.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

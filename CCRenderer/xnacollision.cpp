@@ -20,9 +20,6 @@ namespace XNA
 //-----------------------------------------------------------------------------
 VOID ComputeFrustumFromProjection( Frustum* pOut, XMMATRIX* pProjection )
 {
-    XMASSERT( pOut );
-    XMASSERT( pProjection );
-
     // Corners of the projection frustum in homogenous space.
     static XMVECTOR HomogenousPoints[6] =
     {
