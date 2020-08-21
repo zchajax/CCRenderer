@@ -165,9 +165,12 @@ void FBXLoader::ProcessMesh(FbxMesh* mesh, FBX_MESH_NODE* meshNode)
 
 	int polygonCount = mesh->GetPolygonCount();
 
-	auto pTangent = mesh->GetElementTangent(0);
+	int count = mesh->GetElementTangentCount();
 	auto pNormal = mesh->GetElementNormal(0);
+	auto pTangent = mesh->GetElementTangent(0);
+	pTangent = pTangent ? pTangent : mesh->CreateElementTangent();
 	auto pBinormal = mesh->GetElementBinormal(0);
+	pBinormal = pBinormal ? pBinormal : mesh->CreateElementBinormal();
 
 	unsigned int indx = 0;
 
