@@ -10,13 +10,19 @@ class Node
 {
 public:
 
+	enum NODE_TYPE
+	{
+		NODE_TYPE_OPAQUE = 0,
+		NODE_TYPE_TRANSPARENT
+	};
+
 	virtual ~Node();
 
 	// Render this node to depth texture
 	void RenderToDepthTexture();
 
 	// Render this node with shadow map
-	void RenderShadowMap();
+	void Render();
 
 	virtual void ApplyRenderState() = 0;
 
@@ -25,6 +31,19 @@ public:
 
 	// Draw Primitive
 	virtual void Draw() = 0;
+
+	// Set Type
+	void SetType(NODE_TYPE type)
+	{
+		m_Type = type;
+	}
+
+	NODE_TYPE GetType()
+	{
+		return m_Type;
+	}
+
+	// Get Type
 
 	// Set Position
 	void SetPosition(const XMFLOAT3& pos)
@@ -76,6 +95,8 @@ public:
 protected:
 
 	Node();
+
+	NODE_TYPE					m_Type;
 
 	VERTEX_BUFFER*				m_pVertexBuffer;
 	ID3D11VertexShader*			m_pVertexShader;

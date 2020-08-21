@@ -102,7 +102,7 @@ HRESULT Shape::Init(const char* imagePath)
 void Shape::ApplyRenderState()
 {
 	auto textureRV = m_pTextureRV->GetShaderResoure();
-	RENDER_CONTEXT::SetPixelShaderResource(0, textureRV);
+	RENDER_CONTEXT::SetPixelShaderResource(1, textureRV);
 
 	RENDER_CONTEXT::SetPixelSampler(0, m_pSamplerLinear);
 	RENDER_CONTEXT::SetPixelSampler(1, m_pSamplerShadow);

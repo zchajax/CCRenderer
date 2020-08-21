@@ -17,8 +17,8 @@ void RENDERING_PIPELINE::Init()
     UINT8 sampleCount = gEnableMSAA ? MSAA_COUNT : 1;
 
 	_pTargetColor = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_B8G8R8A8_UNORM, sampleCount, false);
-	/*_pTargetDepth = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_R32_FLOAT, false);
-	_pTargetNormal = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_B8G8R8A8_UNORM, false);*/
+	_pTargetDepth = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_R32_FLOAT, sampleCount, false);
+	_pTargetNormal = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_B8G8R8A8_UNORM, sampleCount, false);
 
     _pResolveTarget = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_B8G8R8A8_UNORM, 1, false);
 

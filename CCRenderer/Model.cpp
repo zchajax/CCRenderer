@@ -197,10 +197,10 @@ void Model::ApplyRenderState()
 	auto normalMap = m_pNormalMap->GetShaderResoure();
 	auto metallicSmoothMap = m_pMetallicSmoothMap->GetShaderResoure();
 	auto occlusionMap = m_pOcclusionMap->GetShaderResoure();
-	RENDER_CONTEXT::SetPixelShaderResource(0, textureRV);
-	RENDER_CONTEXT::SetPixelShaderResource(5, metallicSmoothMap);
-	RENDER_CONTEXT::SetPixelShaderResource(6, occlusionMap);
-	RENDER_CONTEXT::SetPixelShaderResource(7, normalMap);
+	RENDER_CONTEXT::SetPixelShaderResource(1, textureRV);
+	RENDER_CONTEXT::SetPixelShaderResource(2, metallicSmoothMap);
+	RENDER_CONTEXT::SetPixelShaderResource(3, occlusionMap);
+	RENDER_CONTEXT::SetPixelShaderResource(4, normalMap);
 
 	RENDER_CONTEXT::SetPixelSampler(0, m_pSamplerLinear);
 	RENDER_CONTEXT::SetPixelSampler(1, m_pSamplerShadow);

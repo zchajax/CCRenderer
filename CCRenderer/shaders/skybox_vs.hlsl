@@ -27,6 +27,7 @@ VS_OUTPUT main( VS_INPUT input )
 {
 	VS_OUTPUT output = (VS_OUTPUT)0;
 	output.Pos = mul(input.Pos, Wvp);
+	output.Pos = output.Pos.xyww;
 	output.Tex = input.Pos.xyz;
 
     return output;

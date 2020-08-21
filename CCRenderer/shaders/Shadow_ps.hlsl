@@ -1,8 +1,8 @@
 
 #define MAX_CASCADED 8
 
-Texture2D txDiffuse : register(t0);
-Texture2DArray shadowTexture : register(t1);
+Texture2DArray shadowTexture : register(t0);
+Texture2D txDiffuse : register(t1);
 
 SamplerState samLinear : register(s0);
 SamplerState samShadow : register(s1);

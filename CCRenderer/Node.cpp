@@ -91,7 +91,7 @@ void Node::RenderToDepthTexture()
 	Draw();
 }
 
-void Node::RenderShadowMap()
+void Node::Render()
 {
 	ID3D11DeviceContext* immediateContext = RENDER_CONTEXT::GetImmediateContext();
 

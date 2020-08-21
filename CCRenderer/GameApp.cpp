@@ -143,7 +143,7 @@ HRESULT GameApp::Init(HWND hWnd, int argc, char * argv[])
 	//Model* model1 = Model::Create("assets/Cannon.fbx");
 	//model1->SetPosition(XMFLOAT3(1.0f, -1.0f, 3.0f));
 	//model1->setRotation(XMFLOAT3(0.0f, -1.8f, 0.0f));
-	//model1->setScale(XMFLOAT3(1.5f, 1.5f, 1.5f));
+	//model1->setScale(XMFLOAT3(0.1f, 0.1f, 0.1f));
 	//AddNode(model1);
 
 	//Model* model2 = Model::Create("assets/Cannon.fbx");
@@ -299,7 +299,10 @@ void GameApp::RenderShadowMap()
 
 		for (std::vector<Node*>::iterator iter = m_Nodes.begin(); iter != m_Nodes.end(); iter++)
 		{
-			(*iter)->RenderToDepthTexture();
+			if ((*iter)->GetType() == Node::NODE_TYPE_OPAQUE)
+			{
+				(*iter)->RenderToDepthTexture();
+			}
 		}
 
 		RENDER_CONTEXT::PopMarker();
@@ -319,8 +322,8 @@ void GameApp::RenderScene()
 	//RENDER_CONTEXT::SetCurrentRenderTarget(RENDER_CONTEXT::GetFrontBuffer());
 	RENDER_CONTEXT::SetCurrentDepthTarget(RENDER_CONTEXT::GetDepthBuffer());
 	RENDERING_PIPELINE::SetTargetOutputColor();
-	/*RENDERING_PIPELINE::SetTargetOutputDepth();
-	RENDERING_PIPELINE::SetTargetOutputNormal();*/
+	RENDERING_PIPELINE::SetTargetOutputDepth();
+	RENDERING_PIPELINE::SetTargetOutputNormal();
 	RENDER_CONTEXT::ApplyRenderTargets();
 
 	RENDER_CONTEXT::Clear(CF_CLEAR_COLOR | CF_CLEAR_ZBUFFER, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0);
@@ -331,22 +334,40 @@ void GameApp::RenderScene()
 	// Render light source
 	m_LightSource.Render();
 
-	// Render skybox
-	m_SkyBox.Render();
-
 	// Init Frame
 	m_pCascadedShadowMap->PrepareRenderWithShadowMap(RENDER_CONTEXT::GetImmediateContext());
 
-	RENDER_CONTEXT::SetPixelShaderResource(1, m_pCascadedShadowMap->getShadowMap());
-	RENDER_CONTEXT::SetPixelShaderResource(2, m_SkyBox.GetIrradianceMap());
+	RENDER_CONTEXT::SetPixelShaderResource(0, m_pCascadedShadowMap->getShadowMap());
+	/*RENDER_CONTEXT::SetPixelShaderResource(2, m_SkyBox.GetIrradianceMap());
 	RENDER_CONTEXT::SetPixelShaderResource(3, m_SkyBox.GetFilterMipmap());
-	RENDER_CONTEXT::SetPixelShaderResource(4, m_SkyBox.GetBrdfMap());
+	RENDER_CONTEXT::SetPixelShaderResource(4, m_SkyBox.GetBrdfMap());*/
 
-	// Render objects with shadow map
+	// Render opaque objects
+	RENDER_CONTEXT::PushMarker(MARK("Render Opaque"));
 	for (std::vector<Node*>::iterator iter = m_Nodes.begin(); iter != m_Nodes.end(); iter++)
 	{
-		(*iter)->RenderShadowMap();
+		if ((*iter)->GetType() == Node::NODE_TYPE_OPAQUE)
+		{
+			(*iter)->Render();
+		}
 	}
+	RENDER_CONTEXT::PopMarker();
+
+	// Render skybox
+	RENDER_CONTEXT::PushMarker(MARK("Render SkyBox"));
+	m_SkyBox.Render();
+	RENDER_CONTEXT::PopMarker();
+
+	// Render transparent objects
+	RENDER_CONTEXT::PushMarker(MARK("Render Transparent"));
+	for (std::vector<Node*>::iterator iter = m_Nodes.begin(); iter != m_Nodes.end(); iter++)
+	{
+		if ((*iter)->GetType() == Node::NODE_TYPE_TRANSPARENT)
+		{
+			(*iter)->Render();
+		}
+	}
+	RENDER_CONTEXT::PopMarker();
 
     extern bool gEnableMSAA;
 
@@ -398,10 +419,11 @@ void GameApp::OnEvent(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	EventDispatcher::getInstance()->OnEvent(hWnd, message, wParam, lParam);
 }
 
-void GameApp::AddNode(Node* node)
+void GameApp::AddNode(Node* node, Node::NODE_TYPE type)
 {
 	if (node)
 	{
+		node->SetType(type);
 		m_Nodes.push_back(node);
 	}
 }

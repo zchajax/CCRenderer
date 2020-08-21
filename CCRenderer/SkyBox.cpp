@@ -187,6 +187,8 @@ HRESULT SkyBox::Init(ID3D11Device* device)
 	D3D11_DEPTH_STENCIL_DESC disableDepthDesc;
 	ZeroMemory(&disableDepthDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
 	disableDepthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	disableDepthDesc.DepthEnable = true;
+	disableDepthDesc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
 	RENDER_CONTEXT::GetDevice()->CreateDepthStencilState(&disableDepthDesc, &m_pDepthStencilStateDisable);
 
 	// Create able depth stencil state

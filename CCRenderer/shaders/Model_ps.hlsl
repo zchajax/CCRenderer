@@ -1,14 +1,15 @@
 
 #define MAX_CASCADED 8
 
-Texture2D txDiffuse : register(t0);
-Texture2DArray shadowTexture : register(t1);
-TextureCube txCube : register(t2);
-TextureCube preFilterMap : register(t3);
-Texture2D brdfMap : register(t4);
-Texture2D metallicTexture: register(t5);
-Texture2D occlusionTexture: register(t6);
-Texture2D normalTexure : register(t7);
+Texture2DArray shadowTexture : register(t0);
+Texture2D txDiffuse : register(t1);
+Texture2D metallicTexture: register(t2);
+Texture2D occlusionTexture: register(t3);
+Texture2D normalTexure : register(t4);
+
+//TextureCube txCube : register(t2);
+//TextureCube preFilterMap : register(t3);
+//Texture2D brdfMap : register(t4);
 SamplerState samLinear : register(s0);
 SamplerState samShadow : register(s1);
 
@@ -63,26 +64,26 @@ float3 fresnelSchlickRoughness(float cosTheta, float3 F0, float roughness)
 	return F0 + (max(1.0f - roughness, F0) - F0) * pow(1.0f - cosTheta, 5.0f);
 }
 
-float3 computePBRAmbient(float3 N, float3 V, float3 albedo, float roughness, float3 metallic, float3 F0)
-{
-	float3 R = normalize(reflect(float4(-V, 0.0f), float4(N, 0.0f))).xyz;
-	float dotNV = clamp(dot(N, V), 0.0f, 1.0f);
-
-	float3 F = fresnelSchlickRoughness(dotNV, F0, roughness);
-	float3 ks = F;
-	float3 kd = 1.0f - ks;
-	kd *= 1.0f - metallic;
-
-	float3 irradiance = txCube.Sample(samLinear, N).xyz;
-	float3 diffuse = irradiance * albedo;
-
-	float3 prefilteredColor = preFilterMap.SampleLevel(samLinear, R, roughness * 4.0f).xyz;
-	float2 envBRDF = brdfMap.Sample(samLinear, float2(dotNV, roughness)).xy;
-	float3 specular = prefilteredColor * (F * envBRDF.x + envBRDF.y);
-	float3 ambient = (kd * diffuse + specular);
-
-	return ambient;
-}
+//float3 computePBRAmbient(float3 N, float3 V, float3 albedo, float roughness, float3 metallic, float3 F0)
+//{
+//	float3 R = normalize(reflect(float4(-V, 0.0f), float4(N, 0.0f))).xyz;
+//	float dotNV = clamp(dot(N, V), 0.0f, 1.0f);
+//
+//	float3 F = fresnelSchlickRoughness(dotNV, F0, roughness);
+//	float3 ks = F;
+//	float3 kd = 1.0f - ks;
+//	kd *= 1.0f - metallic;
+//
+//	float3 irradiance = txCube.Sample(samLinear, N).xyz;
+//	float3 diffuse = irradiance * albedo;
+//
+//	float3 prefilteredColor = preFilterMap.SampleLevel(samLinear, R, roughness * 4.0f).xyz;
+//	float2 envBRDF = brdfMap.Sample(samLinear, float2(dotNV, roughness)).xy;
+//	float3 specular = prefilteredColor * (F * envBRDF.x + envBRDF.y);
+//	float3 ambient = (kd * diffuse + specular);
+//
+//	return ambient;
+//}
 
 float3 computePBRLighting(float3 N, float3 V, float3 albedo, float roughness, float3 metallic, out float3 ambient)
 {
@@ -118,7 +119,8 @@ float3 computePBRLighting(float3 N, float3 V, float3 albedo, float roughness, fl
 	float invPi = 0.31830988618f;
 
 	//out ambient
-	ambient = computePBRAmbient(N, V, albedo, roughness, metallic, F0);
+	//ambient = computePBRAmbient(N, V, albedo, roughness, metallic, F0);
+	ambient = float3(0.3, 0.3, 0.3);
 
 	float3 directPbr = (kd * albedo * invPi + specular) * LightColor.xyz * dotNL;
 	/*directPbr = directPbr / (directPbr + 1.0f);
@@ -165,7 +167,8 @@ void main(
 
 	float4 BumpNormal = normalTexure.Sample(samLinear, input.Tex);
 	BumpNormal = float4(BumpNormal.xyz * 2.0f - 1.0f, 0.0f);
-	BumpNormal.xyz = mul(BumpNormal.xyz, float3x3(input.Tangent, input.BiNorm, input.Norm));
+	//BumpNormal.xyz = mul(BumpNormal.xyz, float3x3(input.Tangent, input.BiNorm, input.Norm));
+	BumpNormal.xyz = input.Norm;
 	BumpNormal.w = 0.0f;
 	BumpNormal = normalize(BumpNormal);
 
@@ -195,11 +198,12 @@ void main(
 		finalColor *= visibility;
 		//finalColor += 0.03f * textureColor * occlusion.x;
 
-		finalColor.xyz += ambient * occlusion.x;
+		finalColor.xyz += ambient * occlusion.x * textureColor.xyz;
 		finalColor.a = 1.0f;
 	}
 
 	outColor = finalColor;
-	outNormal.xyz = BumpNormal.xyz;
+	outNormal.xyz = input.Norm;
+	outNormal.w = 1.0;
 	outDepth.r = input.ClipPos.z / input.ClipPos.w;
 }

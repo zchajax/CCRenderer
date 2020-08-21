@@ -2,6 +2,7 @@
 #include <vector>
 #include <d3d11_1.h>
 #include <d3dx11.h>
+#include "Node.h"
 #include "Timer.h"
 #include "Camera.h"
 #include "SkyBox.h"
@@ -9,7 +10,6 @@
 #include <DirectXMath.h>
 using namespace DirectX;
 
-class Node;
 class CascadedShadowMap;
 class SWAP_CHAIN;
 class GameApp
@@ -55,7 +55,7 @@ public:
     void OnEvent(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
     // Add shape to the Rendering list
-    void AddNode(Node* shape);
+    void AddNode(Node* shape, Node::NODE_TYPE type = Node::NODE_TYPE_OPAQUE);
 
     // Remove shape from the rendering list
     void RemoveNode(Node* shape);
