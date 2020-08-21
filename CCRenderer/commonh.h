@@ -7,6 +7,13 @@ using namespace DirectX;
 
 struct Vertex
 {
+	Vertex(XMFLOAT3 p, XMFLOAT3 n, XMFLOAT2 t)
+	{
+		Pos = p;
+		Normal = n;
+		Tex = t;
+	}
+
 	XMFLOAT3 Pos;
 	XMFLOAT3 Normal;
 	XMFLOAT2 Tex;

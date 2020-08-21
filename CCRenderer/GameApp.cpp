@@ -3,6 +3,7 @@
 #include "RenderTarget.h"
 #include "Texture_DX11.h"
 #include "Cube.h"
+#include "Sphere.h"
 #include "Plane.h"
 #include "Model.h"
 #include "RenderDoc.h"
@@ -134,6 +135,10 @@ HRESULT GameApp::Init(HWND hWnd, int argc, char * argv[])
 	Cube* cube3 = Cube::Create("assets/test.dds");
 	cube3->SetPosition(XMFLOAT3(16.0f, 0.0f, 10.0f));
 	AddNode(cube3);
+
+	Sphere* sphere1 = Sphere::Create("");
+	sphere1->SetPosition(XMFLOAT3(1.0f, 0.0f, 3.0f));
+	AddNode(sphere1);
 
 	Plane* plane = Plane::Create("assets/test.dds");
 	plane->SetPosition(XMFLOAT3(3.0f, -1.0f, 3.0f));

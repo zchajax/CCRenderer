@@ -180,6 +180,7 @@
     <ClInclude Include="ShadowShaderClass.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="Sphere.h" />
     <ClInclude Include="SwapChain.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Texture.h" />
@@ -210,6 +211,7 @@
     <ClCompile Include="ShadowShaderClass.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="SkyBox.cpp" />
+    <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureManager.cpp" />

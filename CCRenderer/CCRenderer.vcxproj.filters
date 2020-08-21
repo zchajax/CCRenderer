@@ -120,6 +120,9 @@
     <ClInclude Include="xnacollision.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Source Files\Nodes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Demo.cpp">
@@ -199,6 +202,9 @@
     </ClCompile>
     <ClCompile Include="xnacollision.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Source Files\Nodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
