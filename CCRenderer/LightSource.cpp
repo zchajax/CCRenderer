@@ -24,7 +24,6 @@ void LightSource::Init()
 	m_AmbientColor = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
 	XMStoreFloat4(&m_LightDir, XMVector4Normalize(XMLoadFloat4(&position) - XMLoadFloat4(&lookAt)));
 	m_LightColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_Shininess = 0.078f;
 
 	GameApp* app = GameApp::getInstance();
 
@@ -49,13 +48,10 @@ void LightSource::Render()
 	cb.vAmbientColor = m_AmbientColor;
 	cb.vLightDir = m_LightDir;
 	cb.vLightColor = m_LightColor;
-	cb.Shininess = m_Shininess;
 	cb.mLightView = XMMatrixTranspose(XMLoadFloat4x4(&m_LightView));
 	cb.mLightProj = XMMatrixTranspose(XMLoadFloat4x4(&m_LightProj));
 	RENDER_CONTEXT::GetImmediateContext()->UpdateSubresource(m_pConstantBuffer, 0, NULL, &cb, 0, 0);
 
-	// Set constant buffer
-	RENDER_CONTEXT::GetImmediateContext()->VSSetConstantBuffers(12, 1, &m_pConstantBuffer);
 	RENDER_CONTEXT::GetImmediateContext()->PSSetConstantBuffers(12, 1, &m_pConstantBuffer);
 }
 

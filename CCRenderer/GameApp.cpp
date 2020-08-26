@@ -12,6 +12,7 @@
 #include "TextureManager.h"
 #include "Rendering_Pipeline.h"
 #include "commonh.h"
+#include "DirectionalLight.h"
 #include <d3dcompiler.h>
 #include <fstream>
 
@@ -151,30 +152,6 @@ HRESULT GameApp::Init(HWND hWnd, int argc, char * argv[])
 	model1->setScale(XMFLOAT3(0.03f, 0.03f, 0.03f));
 	AddNode(model1);
 
-	//Model* model2 = Model::Create("assets/Cannon.fbx");
-	//model2->SetPosition(XMFLOAT3(3.0f, -1.0f, 8.0f));
-	//model2->setRotation(XMFLOAT3(0.0f, 0.0f, 0.0f));
-	//model2->setScale(XMFLOAT3(1.5f, 1.5f, 1.5f));
-	//AddNode(model2);
-
-	//Model* model3 = Model::Create("assets/Cannon.fbx");
-	//model3->SetPosition(XMFLOAT3(6.0f, -1.0f, 13.0f));
-	//model3->setRotation(XMFLOAT3(0.0f, 1.8f, 0.0f));
-	//model3->setScale(XMFLOAT3(1.5f, 1.5f, 1.5f));
-	//AddNode(model3);
-
-	//Model* model4 = Model::Create("assets/Cannon.fbx");
-	//model4->SetPosition(XMFLOAT3(10.0f, -1.0f, -5.0f));
-	//model4->setRotation(XMFLOAT3(0.0f, 0.8f, 0.0f));
-	//model4->setScale(XMFLOAT3(1.5f, 1.5f, 1.5f));
-	//AddNode(model4);
-
-	//Model* model5 = Model::Create("assets/Cannon.fbx");
-	//model5->SetPosition(XMFLOAT3(-6.0f, -1.0f, -13.0f));
-	//model5->setRotation(XMFLOAT3(0.0f, 2.1f, 0.0f));
-	//model5->setScale(XMFLOAT3(1.5f, 1.5f, 1.5f));
-	//AddNode(model5);
-
 	// Initialize camera
 	m_Camera.Init();
 	auto Eye = XMFLOAT4(9.39f, 7.44f, 7.48f, 1.0f);
@@ -183,8 +160,14 @@ HRESULT GameApp::Init(HWND hWnd, int argc, char * argv[])
 	m_Camera.SetProjParams(0.785f, width / (FLOAT)height, 0.01f, 100.0f);
 
 	// Initialize light source
-	m_LightSource.Init();
-	m_LightSource.SetProjParams(width, height, 0.01f, 50.0f);
+	m_Light = DirectionalLight::Create(
+		XMFLOAT4(1.0, 1.0, 1.0, 1.0), 
+		XMFLOAT4(-10.0f, 10.0f, -10.0f, 1.0f), 
+		XMFLOAT4(-10.0f, 10.0f, -10.0f, 1.0f),
+		XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f),
+		1.0, 50.0f);
+	/*m_LightSource.Init();
+	m_LightSource.SetProjParams(width, height, 0.00f, 50.0f);*/
 
 	// Initialize skybox
 	m_SkyBox.Init(RENDER_CONTEXT::GetDevice());
@@ -244,7 +227,7 @@ void GameApp::Update(float delta)
 	m_Camera.Update(delta);
 
 	// Update light source
-	m_LightSource.Update(delta);
+	m_Light->Update(delta);
 
 	// Update skybox
 	m_SkyBox.Update(delta);
@@ -252,8 +235,8 @@ void GameApp::Update(float delta)
 	// Update Cascaded Shadow map
 	m_pCascadedShadowMap->Update(
 		m_Camera, 
-		XMLoadFloat4x4(&m_LightSource.GetLightView()),
-		XMLoadFloat4x4(&m_LightSource.GetLightProj()));
+		XMLoadFloat4x4(&dynamic_cast<DirectionalLight*>(m_Light)->GetLightView()),
+		XMLoadFloat4x4(&dynamic_cast<DirectionalLight*>(m_Light)->GetLightProj()));
 
 	// test
 	Node* test = m_Nodes.at(0);
@@ -337,7 +320,7 @@ void GameApp::RenderScene()
 	m_Camera.Render();
 
 	// Render light source
-	m_LightSource.Render();
+	m_Light->Apply();
 
 	// Init Frame
 	m_pCascadedShadowMap->PrepareRenderWithShadowMap(RENDER_CONTEXT::GetImmediateContext());

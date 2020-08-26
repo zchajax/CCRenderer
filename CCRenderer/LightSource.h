@@ -14,7 +14,7 @@ public:
 
 	void Init();
 
-	void Update(float delta);
+	virtual void Update(float delta);
 
 	void Render();
 
@@ -69,10 +69,6 @@ private:
         XMFLOAT4 vLightColor;
         XMMATRIX mLightView;
         XMMATRIX mLightProj;
-        FLOAT Shininess;
-        FLOAT padding1;
-        FLOAT padding2;
-        FLOAT padding3;
     };
 
 	void CalculateViewMatrix();
@@ -94,5 +90,4 @@ private:
 
 	XMFLOAT4	m_AmbientColor;
 	XMFLOAT4	m_LightColor;
-	FLOAT		m_Shininess;
 };

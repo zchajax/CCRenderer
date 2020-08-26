@@ -29,7 +29,6 @@ cbuffer ConstLightBuffer : register(b12)
 	float4 LightColor;
 	matrix LightView;
 	matrix LightProj;
-	float Shininess;
 }
 
 struct VS_OUTPUT
@@ -105,7 +104,7 @@ void main(
 		float4 viewDir = normalize(Eye - input.WorldPos);
 		float4 h = normalize(LightDir + viewDir);
 		float nh = max(0, dot(input.Norm, h));
-		float spec = pow(nh, Shininess * 2000);
+		float spec = pow(nh, 200);
 
 		finalColor += max(0, dot((float4)input.Norm, LightDir)) * LightColor * textureColor * visibility;
 		finalColor += LightColor * spec * 0.8f * visibility;

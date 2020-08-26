@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "SkyBox.h"
 #include "LightSource.h"
+#include "Light.h"
 #include <DirectXMath.h>
 using namespace DirectX;
 
@@ -96,14 +97,14 @@ private:
 
     static GameApp* s_GameApp;
 
-    HWND			m_hWnd;
+    HWND			    m_hWnd;
     D3D11_VIEWPORT		m_ViewPort;
     CascadedShadowMap* m_pCascadedShadowMap;
 
     Timer			m_Timer;
 
     Camera			m_Camera;
-    LightSource		m_LightSource;
+    Light*		    m_Light;
     SkyBox			m_SkyBox;
 
     std::vector<Node*>	m_Nodes;

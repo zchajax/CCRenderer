@@ -35,7 +35,6 @@ cbuffer ConstLightBuffer : register(b12)
 	float4 LightColor;
 	matrix LightView;
 	matrix LightProj;
-	float Shininess;
 }
 
 struct VS_OUTPUT

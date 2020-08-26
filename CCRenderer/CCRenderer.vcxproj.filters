@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Nodes">
       <UniqueIdentifier>{8ed1873f-5a9e-428f-8f67-2ae1fbbe137e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Light">
+      <UniqueIdentifier>{b829fa2a-fec4-4be7-a8cc-ead74014b08e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -123,6 +126,15 @@
     <ClInclude Include="Sphere.h">
       <Filter>Source Files\Nodes</Filter>
     </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Source Files\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionalLight.h">
+      <Filter>Source Files\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Source Files\Light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Demo.cpp">
@@ -205,6 +217,15 @@
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
       <Filter>Source Files\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectionalLight.cpp">
+      <Filter>Source Files\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Source Files\Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
