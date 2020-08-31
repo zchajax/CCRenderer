@@ -29,7 +29,7 @@ protected:
 private:
 
 	Texture*					m_pNormalMap;
-	Texture*					m_pMetallicSmoothMap;
-	Texture*					m_pOcclusionMap;
+	Texture*					m_pMetallicMap;
+	Texture*					m_pRoughnessMap;
 	FBX_MESH_NODE				m_MeshNode;
 };

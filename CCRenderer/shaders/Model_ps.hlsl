@@ -4,7 +4,7 @@
 Texture2DArray shadowTexture : register(t0);
 Texture2D txDiffuse : register(t1);
 Texture2D metallicTexture: register(t2);
-Texture2D occlusionTexture: register(t3);
+Texture2D roughnessTexture: register(t3);
 Texture2D normalTexure : register(t4);
 
 //TextureCube txCube : register(t2);
@@ -158,7 +158,7 @@ void main(
 	// Compute pixel's color
 	float4 finalColor = 0;
 	float4 textureColor = txDiffuse.Sample(samLinear, input.Tex);
-	float4 occlusion = occlusionTexture.Sample(samLinear, input.Tex);
+	//float4 occlusion = occlusionTexture.Sample(samLinear, input.Tex);
 
 	float2 projTexCoord;
 	projTexCoord.x = LightPos.x / LightPos.w / 2.0f + 0.5f;
@@ -192,13 +192,13 @@ void main(
 		float4 viewDir = normalize(Eye - input.WorldPos);
 		float4 metallic_smooth = metallicTexture.Sample(samLinear, input.Tex);
 		float3 metallic = metallic_smooth.xyz;
-		float roughness = 1.0f - metallic_smooth.w;
+		float roughness = roughnessTexture.Sample(samLinear, input.Tex);
 		float3 ambient;
 		finalColor.xyz += computePBRLighting(BumpNormal.xyz, viewDir.xyz, textureColor.xyz, roughness, metallic, ambient);
 		finalColor *= visibility;
 		//finalColor += 0.03f * textureColor * occlusion.x;
 
-		finalColor.xyz += ambient * occlusion.x * textureColor.xyz;
+		finalColor.xyz += ambient * /*occlusion.x **/ textureColor.xyz;
 		finalColor.a = 1.0f;
 	}
 

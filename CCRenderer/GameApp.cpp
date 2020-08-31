@@ -145,11 +145,11 @@ HRESULT GameApp::Init(HWND hWnd, int argc, char * argv[])
 	plane->setScale(XMFLOAT3(20.0f, 1.0f, 20.0f));
 	AddNode(plane);
 
-	//Model* model1 = Model::Create("assets/Cannon.fbx");
-	//model1->SetPosition(XMFLOAT3(1.0f, -1.0f, 3.0f));
-	//model1->setRotation(XMFLOAT3(0.0f, -1.8f, 0.0f));
-	//model1->setScale(XMFLOAT3(0.1f, 0.1f, 0.1f));
-	//AddNode(model1);
+	Model* model1 = Model::Create("assets/Cerberus_LP.fbx");
+	model1->SetPosition(XMFLOAT3(2.0f, 1.0f, 5.0f));
+	model1->setRotation(XMFLOAT3(-3.14f / 2, 0.0f, 0.0f));
+	model1->setScale(XMFLOAT3(0.03f, 0.03f, 0.03f));
+	AddNode(model1);
 
 	//Model* model2 = Model::Create("assets/Cannon.fbx");
 	//model2->SetPosition(XMFLOAT3(3.0f, -1.0f, 8.0f));

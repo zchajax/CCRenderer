@@ -27,15 +27,15 @@ Model* Model::Create(const char* filename)
 Model::Model()
 {
 	m_pNormalMap = NULL;
-	m_pMetallicSmoothMap = NULL;
-	m_pOcclusionMap = NULL;
+	m_pMetallicMap = NULL;
+	m_pRoughnessMap = NULL;
 }
 
 Model::~Model()
 {
 	if (m_pNormalMap) m_pNormalMap->Release();
-	if (m_pMetallicSmoothMap) m_pMetallicSmoothMap->Release();
-	if (m_pOcclusionMap) m_pOcclusionMap->Release();
+	if (m_pMetallicMap) m_pMetallicMap->Release();
+	if (m_pRoughnessMap) m_pRoughnessMap->Release();
 }
 
 HRESULT Model::Init(const char* filename)
@@ -139,19 +139,19 @@ HRESULT Model::Init(const char* filename)
 		return hr;
 
 	// Load Textures
-	hr = Texture::Create("assets/Cannon_AlbedoTransparency.png", &m_pTextureRV);
+	hr = Texture::Create("assets/Cerberus_A.dds", &m_pTextureRV);
 	if (FAILED(hr))
 		return hr;
 
-	hr = Texture::Create("assets/Cannon_Normal.png", &m_pNormalMap);
+	hr = Texture::Create("assets/Cerberus_N.dds", &m_pNormalMap);
 	if (FAILED(hr))
 		return hr;
 
-	hr = Texture::Create("assets/Cannon_MetallicSmoothness.png", &m_pMetallicSmoothMap);
+	hr = Texture::Create("assets/Cerberus_M.dds", &m_pMetallicMap);
 	if (FAILED(hr))
 		return hr;
 
-	hr = Texture::Create("assets/Cannon_Occlusion.png", &m_pOcclusionMap);
+	hr = Texture::Create("assets/Cerberus_R.dds", &m_pRoughnessMap);
 	if (FAILED(hr))
 		return hr;
 
@@ -195,11 +195,11 @@ void Model::ApplyRenderState()
 {
 	auto textureRV = m_pTextureRV->GetShaderResoure();
 	auto normalMap = m_pNormalMap->GetShaderResoure();
-	auto metallicSmoothMap = m_pMetallicSmoothMap->GetShaderResoure();
-	auto occlusionMap = m_pOcclusionMap->GetShaderResoure();
+	auto metallicMap = m_pMetallicMap->GetShaderResoure();
+	auto roughnessMap = m_pRoughnessMap->GetShaderResoure();
 	RENDER_CONTEXT::SetPixelShaderResource(1, textureRV);
-	RENDER_CONTEXT::SetPixelShaderResource(2, metallicSmoothMap);
-	RENDER_CONTEXT::SetPixelShaderResource(3, occlusionMap);
+	RENDER_CONTEXT::SetPixelShaderResource(2, metallicMap);
+	RENDER_CONTEXT::SetPixelShaderResource(3, roughnessMap);
 	RENDER_CONTEXT::SetPixelShaderResource(4, normalMap);
 
 	RENDER_CONTEXT::SetPixelSampler(0, m_pSamplerLinear);
