@@ -324,6 +324,13 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)shaders/%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\BRDF.hlsli" />
+    <None Include="shaders\common.hlsli" />
+    <None Include="shaders\Light.hlsli" />
+    <None Include="shaders\PBRInput.hlsli" />
+    <None Include="shaders\Shadow.hlsli" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

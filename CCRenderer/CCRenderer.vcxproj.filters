@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Light">
       <UniqueIdentifier>{b829fa2a-fec4-4be7-a8cc-ead74014b08e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\shaders\include">
+      <UniqueIdentifier>{23318944-9a0a-4567-b0ab-2e6b4083b728}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -296,5 +299,22 @@
     <FxCompile Include="shaders\Depth_vs.hlsl">
       <Filter>Source Files\shaders</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\BRDF.hlsli">
+      <Filter>Source Files\shaders\include</Filter>
+    </None>
+    <None Include="shaders\Light.hlsli">
+      <Filter>Source Files\shaders\include</Filter>
+    </None>
+    <None Include="shaders\PBRInput.hlsli">
+      <Filter>Source Files\shaders\include</Filter>
+    </None>
+    <None Include="shaders\Shadow.hlsli">
+      <Filter>Source Files\shaders\include</Filter>
+    </None>
+    <None Include="shaders\common.hlsli">
+      <Filter>Source Files\shaders\include</Filter>
+    </None>
   </ItemGroup>
 </Project>
