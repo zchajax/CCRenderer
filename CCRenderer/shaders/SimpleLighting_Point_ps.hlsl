@@ -1,4 +1,4 @@
-#define DIRECTIONAL
+#define POINT
 
 #include "Common.hlsli"
 #include "Shadow.hlsli"
@@ -20,24 +20,24 @@ struct VS_OUTPUT
 void main(
 	VS_OUTPUT input,
 	out float4 outColor		: SV_TARGET0,
-	out float4 outNormal	: SV_TARGET1,
-	out float4 outDepth		: SV_TARGET2)
+	out float4 outNormal : SV_TARGET1,
+	out float4 outDepth : SV_TARGET2)
 {
-	float shadow = ComputeShadow(input.WorldPos, View);
-
+	float4 lightDir = normalize(LightPos - input.WorldPos);
 	float4 viewDir = normalize(Eye - input.WorldPos);
-	float4 h = normalize(LightDir + viewDir);
+	float4 h = normalize(lightDir + viewDir);
 	float nh = max(0, dot(input.Norm, h));
 	float spec = pow(nh, 200);
 
-	float4 finalColor = 0;
 	float4 textureColor = txDiffuse.Sample(samLinear, input.Tex);
-	finalColor += vAmbientColor * textureColor;
+	float dis = distance(LightPos.xyz, input.WorldPos.xyz);
+	float atten = GetAtten(dis);
 
-	finalColor += max(0, dot((float4)input.Norm, LightDir)) * LightColor * textureColor * shadow;
-	finalColor += LightColor * spec * 0.8f * shadow;
+	float4 finalColor = 0;
+	finalColor += max(0, dot((float4)input.Norm, lightDir)) * LightColor * Intensity * textureColor;
+	finalColor += LightColor * Intensity * spec;
 
-	finalColor = saturate(finalColor);
+	finalColor = finalColor * atten;
 
 	outColor = finalColor;
 	outNormal.xyz = input.Norm.xyz;

@@ -105,6 +105,7 @@ private:
 
     Camera			m_Camera;
     Light*		    m_Light;
+    Light*          m_PointLight;
     SkyBox			m_SkyBox;
 
     std::vector<Node*>	m_Nodes;

@@ -25,11 +25,11 @@ HRESULT Shape::Init(const char* imagePath)
 	// Create the vertex shader
 	std::vector<char> compiledShader;
 	SIZE_T size = 0;
-	RENDER_CONTEXT::LoadShader(L"shaders/Shadow_vs.cso", compiledShader, size);
+	RENDER_CONTEXT::LoadShader(L"shaders/SimpleLighting_vs.cso", compiledShader, size);
 	RENDER_CONTEXT::CreateVertexShader(&compiledShader[0], size, &m_pVertexShader);
 
 	// Create the pixel shader
-	RENDER_CONTEXT::CreatePixelShader(L"shaders/Shadow_ps.cso", &m_pPixelShader);
+	RENDER_CONTEXT::CreatePixelShader(L"shaders/SimpleLighting_Point_ps.cso", &m_pPixelShader);
 
 	// Define the input layout
 	D3D11_INPUT_ELEMENT_DESC layout[] =

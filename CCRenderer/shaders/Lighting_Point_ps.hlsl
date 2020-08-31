@@ -1,8 +1,8 @@
 
-#define DIRECTIONAL
+#define POINT
 
 #include "Common.hlsli"
-#include "BRDF.hlsli"
+#include "Lighting.hlsli"
 #include "PBRInput.hlsli"
 #include "Shadow.hlsli"
 #include "Light.hlsli"
@@ -27,8 +27,6 @@ void main(
 {
 	float4 finalColor = 0;
 
-	float shadow = ComputeShadow(input.WorldPos, View);
-
 	float4 textureColor = txDiffuse.Sample(samLinear, input.Tex);
 	//float4 occlusion = occlusionTexture.Sample(samLinear, input.Tex);
 
@@ -40,15 +38,18 @@ void main(
 	BumpNormal = normalize(BumpNormal);
 
 	float4 viewDir = normalize(Eye - input.WorldPos);
+	float4 lightDir = normalize(LightPos - input.WorldPos);
+	float dis = distance(LightPos, input.WorldPos);
+	float atten = GetAtten(dis);
 	float4 metallic_smooth = metallicTexture.Sample(samLinear, input.Tex);
-	float3 metallic = metallic_smooth.xyz;
+	float metallic = metallic_smooth.r;
 	float roughness = roughnessTexture.Sample(samLinear, input.Tex);
-	float3 ambient;
-	finalColor.xyz += computePBRLighting(LightDir.xyz, BumpNormal.xyz, viewDir.xyz, LightColor.rgb, textureColor.xyz, roughness, metallic, ambient);
-	finalColor *= shadow;
+	float3 ambient = float3(0.0f, 0.0f, 0.0f);
+	finalColor.xyz += computePBRLighting(lightDir.xyz, BumpNormal.xyz, viewDir.xyz, LightColor.rgb, textureColor.xyz, Intensity, roughness, metallic, ambient);
+	finalColor *= atten;
 	//finalColor += 0.03f * textureColor * occlusion.x;
 
-	finalColor.xyz += ambient * /*occlusion.x **/ textureColor.xyz;
+	//finalColor.xyz += ambient * /*occlusion.x **/ textureColor.xyz;
 	finalColor.a = 1.0f;
 
 	outColor = finalColor;

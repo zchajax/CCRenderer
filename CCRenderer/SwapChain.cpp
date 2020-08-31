@@ -42,7 +42,7 @@ void SWAP_CHAIN::Create()
 	sd.BufferCount = 2;
 	sd.BufferDesc.Width = RENDER_CONTEXT::GetWidth();
 	sd.BufferDesc.Height = RENDER_CONTEXT::GetHeight();
-	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	sd.BufferDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
 	sd.BufferDesc.RefreshRate.Numerator = 0;
 	sd.BufferDesc.RefreshRate.Denominator = 0;
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT;
@@ -56,10 +56,10 @@ void SWAP_CHAIN::Create()
 	hr = dxgiFactory->CreateSwapChain(RENDER_CONTEXT::GetDevice(), &sd, &m_pSwapChain);
 	assert(SUCCEEDED(hr));
 
-	m_pFrontBuffer = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_B8G8R8A8_UNORM, 1, true);
+	m_pFrontBuffer = new RENDER_TARGET(RENDER_CONTEXT::GetWidth(), RENDER_CONTEXT::GetHeight(), DXGI_FORMAT_R16G16B16A16_FLOAT, 1, true);
     m_pFrontBuffer->_pTexture->_uiWidth = RENDER_CONTEXT::GetWidth();
 	m_pFrontBuffer->_pTexture->_uiHeight = RENDER_CONTEXT::GetHeight();
-	m_pFrontBuffer->_pTexture->_Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	m_pFrontBuffer->_pTexture->_Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
 
 	hr = m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&m_pFrontBuffer->_pTexture->_pD3DTexture);
 	assert(SUCCEEDED(hr));

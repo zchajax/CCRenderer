@@ -34,6 +34,10 @@ private:
 		XMFLOAT4 vLightColor;
 		XMMATRIX mLightView;
 		XMMATRIX mLightProj;
+		FLOAT	 fIntensity;
+		FLOAT	 padding1;
+		FLOAT	 padding2;
+		FLOAT	 padding3;
 	};
 
 	void CalculateViewMatrix();

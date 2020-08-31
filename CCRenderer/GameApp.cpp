@@ -13,6 +13,7 @@
 #include "Rendering_Pipeline.h"
 #include "commonh.h"
 #include "DirectionalLight.h"
+#include "PointLight.h"
 #include <d3dcompiler.h>
 #include <fstream>
 
@@ -161,13 +162,18 @@ HRESULT GameApp::Init(HWND hWnd, int argc, char * argv[])
 
 	// Initialize light source
 	m_Light = DirectionalLight::Create(
-		XMFLOAT4(1.0, 1.0, 1.0, 1.0), 
-		XMFLOAT4(-10.0f, 10.0f, -10.0f, 1.0f), 
+		XMFLOAT4(1.0, 1.0, 1.0, 1.0),
+		XMFLOAT4(-10.0f, 10.0f, -10.0f, 1.0f),
 		XMFLOAT4(-10.0f, 10.0f, -10.0f, 1.0f),
 		XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f),
 		1.0, 50.0f);
 	/*m_LightSource.Init();
 	m_LightSource.SetProjParams(width, height, 0.00f, 50.0f);*/
+
+	m_PointLight = PointLight::Create(
+		XMFLOAT4(0.0f, 5.0f, 0.0f, 1.0f),
+		XMFLOAT4(1.0, 1.0, 1.0, 1.0),
+		1.0);
 
 	// Initialize skybox
 	m_SkyBox.Init(RENDER_CONTEXT::GetDevice());
@@ -321,6 +327,8 @@ void GameApp::RenderScene()
 
 	// Render light source
 	m_Light->Apply();
+
+	m_PointLight->Apply();
 
 	// Init Frame
 	m_pCascadedShadowMap->PrepareRenderWithShadowMap(RENDER_CONTEXT::GetImmediateContext());

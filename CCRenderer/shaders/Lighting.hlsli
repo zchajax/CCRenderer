@@ -1,3 +1,8 @@
+#ifndef BRDF
+#define BRDF
+
+#include "Light.hlsli"
+
 float3 fresnelSchlick(float cosTheta, float3 F0)
 {
 	return F0 + (1.0f - F0) * pow(1.0f - cosTheta, 5.0f);
@@ -8,8 +13,10 @@ float3 fresnelSchlickRoughness(float cosTheta, float3 F0, float roughness)
 	return F0 + (max(1.0f - roughness, F0) - F0) * pow(1.0f - cosTheta, 5.0f);
 }
 
-float3 computePBRLighting(float3 L, float3 N, float3 V, float3 lightColor, float3 albedo, float roughness, float3 metallic, out float3 ambient)
+float3 computePBRLighting(float3 L, float3 N, float3 V, float3 lightColor, float3 albedo, float intensity, float roughness, float metallic, out float3 ambient)
 {
+	lightColor *= intensity;
+
 	float alpha = roughness * roughness;
 	float3 H = normalize(L + V).xyz;
 	float dotNL = clamp(dot(N, L), 0.0f, 1.0f);
@@ -32,8 +39,9 @@ float3 computePBRLighting(float3 L, float3 N, float3 V, float3 lightColor, float
 	G = dotNV / (dotNV * (1.0f - k) + k) * dotNL / (dotNL * (1.0f - k) + k);
 
 	float3 ks = F;
-	float3 kd = 1.0f - ks;
-	kd *= 1.0f - metallic;
+	/*float3 kd = 1.0f - ks;
+	kd *= 1.0f - metallic;*/
+	float3 kd = 1.0f - metallic;
 
 	float3 numberator = D * F * G;
 	float  denominator = (4 * dotNL * dotNV);
@@ -42,7 +50,11 @@ float3 computePBRLighting(float3 L, float3 N, float3 V, float3 lightColor, float
 
 	//out ambient
 	//ambient = computePBRAmbient(N, V, albedo, roughness, metallic, F0);
-	ambient = float3(0.3, 0.3, 0.3);
+#ifdef DIRECTIONAL
+	ambient = vAmbientColor;
+#else
+	ambient = float3(0, 0, 0);
+#endif
 
 	float3 directPbr = (kd * albedo * invPi + specular) * lightColor.xyz * dotNL;
 	/*directPbr = directPbr / (directPbr + 1.0f);
@@ -70,3 +82,5 @@ float3 computePBRLighting(float3 L, float3 N, float3 V, float3 lightColor, float
 //
 //	return ambient;
 //}
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef SHADOW
+#define SHADOW
+
 #define MAX_CASCADED 8
 
 Texture2DArray shadowTexture : register(t0);
@@ -70,3 +73,10 @@ float ComputeShadow(float4 worldPos, matrix viewMat)
 
 	return visibility;
 }
+
+float GetAtten(float distance)
+{
+	return 1.0 / (pow(distance, 2) + distance);
+}
+
+#endif

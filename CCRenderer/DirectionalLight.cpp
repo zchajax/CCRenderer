@@ -51,6 +51,7 @@ void DirectionalLight::Apply()
 	cb.vLightColor = m_Color;
 	cb.mLightView = XMMatrixTranspose(XMLoadFloat4x4(&m_LightView));
 	cb.mLightProj = XMMatrixTranspose(XMLoadFloat4x4(&m_LightProj));
+	cb.fIntensity = m_Intensity;
 	RENDER_CONTEXT::GetImmediateContext()->UpdateSubresource(m_pConstantBuffer, 0, NULL, &cb, 0, 0);
 
 	// bind
