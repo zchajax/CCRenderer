@@ -4,6 +4,7 @@
 #include <DirectXMath.h>
 using namespace DirectX;
 
+class SamplerState;
 class VERTEX_BUFFER;
 class Texture;
 class Node
@@ -105,8 +106,8 @@ protected:
 	ID3D11Buffer*				m_pIndexBuffer;
 	ID3D11Buffer*				m_pConstantBuffer;
 	Texture*					m_pTextureRV;
-	ID3D11SamplerState*         m_pSamplerLinear;
-	ID3D11SamplerState*         m_pSamplerShadow;
+	SamplerState*				m_pSamplerLinear;
+	SamplerState*				m_pSamplerShadow;
 	XMFLOAT4X4					m_World;
 	XMFLOAT4X4					m_Wvp;
 	XMFLOAT3					m_Position;

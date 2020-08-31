@@ -10,6 +10,7 @@
 #include "EventDispatcher.h"
 #include "CascadedShadowMap.h"
 #include "TextureManager.h"
+#include "SamplerStateManager.h"
 #include "Rendering_Pipeline.h"
 #include "commonh.h"
 #include "DirectionalLight.h"
@@ -399,6 +400,7 @@ void GameApp::Clear()
 	EventDispatcher::destroyInstance();
 	FBXLoader::DestoryInstance();
 	TextureManager::DestoryInstance();
+	SamplerStateManager::DestoryInstance();
 
 	RENDERING_PIPELINE::Release();
 

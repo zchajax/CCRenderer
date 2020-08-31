@@ -3,6 +3,7 @@
 #include "GameApp.h"
 #include "RenderContext.h"
 #include "VertexBuffer.h"
+#include "SamplerStateManager.h"
 #include "commonh.h"
 #include <memory>
 
@@ -155,36 +156,11 @@ HRESULT Model::Init(const char* filename)
 	if (FAILED(hr))
 		return hr;
 
-	// Create the common sample state
-	D3D11_SAMPLER_DESC sampDesc;
-	ZeroMemory(&sampDesc, sizeof(sampDesc));
-	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-	sampDesc.MinLOD = 0;
-	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-	hr = RENDER_CONTEXT::GetDevice()->CreateSamplerState(&sampDesc, &m_pSamplerLinear);
-	if (FAILED(hr))
-		return hr;
+	// Create the albedo texture sample state
+	m_pSamplerLinear = SamplerStateManager::GetInstance()->GetSamplerState(D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_WRAP, D3D11_COMPARISON_NEVER);
 
 	// Create the shadow map sample state
-	ZeroMemory(&sampDesc, sizeof(sampDesc));
-	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-	sampDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-	sampDesc.MinLOD = 0;
-	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-	sampDesc.BorderColor[0] = 0;
-	sampDesc.BorderColor[1] = 0;
-	sampDesc.BorderColor[2] = 0;
-	sampDesc.BorderColor[3] = 0;
-	hr = RENDER_CONTEXT::GetDevice()->CreateSamplerState(&sampDesc, &m_pSamplerShadow);
-	if (FAILED(hr))
-		return hr;
+	m_pSamplerShadow = SamplerStateManager::GetInstance()->GetSamplerState(D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_CLAMP, D3D11_COMPARISON_ALWAYS);
 
 	m_IndexCount = m_MeshNode.indexArray.size();
 
@@ -202,8 +178,8 @@ void Model::ApplyRenderState()
 	RENDER_CONTEXT::SetPixelShaderResource(3, roughnessMap);
 	RENDER_CONTEXT::SetPixelShaderResource(4, normalMap);
 
-	RENDER_CONTEXT::SetPixelSampler(0, m_pSamplerLinear);
-	RENDER_CONTEXT::SetPixelSampler(1, m_pSamplerShadow);
+	RENDER_CONTEXT::SetPixelSampler(0, m_pSamplerLinear->GetSamplerState());
+	RENDER_CONTEXT::SetPixelSampler(1, m_pSamplerShadow->GetSamplerState());
 }
 
 void Model::Draw()

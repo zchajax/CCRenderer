@@ -138,6 +138,12 @@
     <ClInclude Include="PointLight.h">
       <Filter>Source Files\Light</Filter>
     </ClInclude>
+    <ClInclude Include="SamplerState.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SamplerStateManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Demo.cpp">
@@ -229,6 +235,12 @@
     </ClCompile>
     <ClCompile Include="PointLight.cpp">
       <Filter>Source Files\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="SamplerState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SamplerStateManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -180,6 +180,8 @@
     <ClInclude Include="Rendering_Pipeline.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SamplerState.h" />
+    <ClInclude Include="SamplerStateManager.h" />
     <ClInclude Include="ShadowShaderClass.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="SkyBox.h" />
@@ -214,6 +216,8 @@
     <ClCompile Include="RenderDoc.cpp" />
     <ClCompile Include="Rendering_Pipeline.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
+    <ClCompile Include="SamplerState.cpp" />
+    <ClCompile Include="SamplerStateManager.cpp" />
     <ClCompile Include="ShadowShaderClass.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="SkyBox.cpp" />

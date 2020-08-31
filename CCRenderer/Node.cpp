@@ -31,8 +31,6 @@ Node::~Node()
 	if (m_pVertexShader) m_pVertexShader->Release();
 	if (m_pPixelShader) m_pPixelShader->Release();
 	if (m_pTextureRV) m_pTextureRV->Release();
-	if (m_pSamplerLinear) m_pSamplerLinear->Release();
-	if (m_pSamplerShadow) m_pSamplerShadow->Release();
 }
 
 void Node::Update(float delta)
