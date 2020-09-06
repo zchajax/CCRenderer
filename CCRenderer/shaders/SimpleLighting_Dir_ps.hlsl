@@ -35,7 +35,7 @@ void main(
 	finalColor += vAmbientColor * textureColor;
 
 	finalColor += max(0, dot((float4)input.Norm, LightDir)) * LightColor * Intensity * textureColor * shadow;
-	finalColor += LightColor * spec * 0.8f * shadow;
+	finalColor += LightColor * spec * 0.8f * shadow * Intensity;
 
 	finalColor = saturate(finalColor);
 
