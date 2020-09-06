@@ -7,8 +7,20 @@
 #include "Sphere.h"
 #include "Plane.h"
 #include "Model.h"
+#include "GameApp.h"
 #include "RenderContext.h"
 #include "Rendering_Pipeline.h"
+#include <algorithm> 
+
+bool OpaqueSort(Node* node1, Node* node2)
+{ 
+	return (node1->GetDistanceFromCamera() < node2->GetDistanceFromCamera());
+}
+
+bool TransparentSort(Node* node1, Node* node2)
+{
+	return (node1->GetDistanceFromCamera() > node2->GetDistanceFromCamera());
+}
 
 Scene::Scene()
 {
@@ -17,12 +29,17 @@ Scene::Scene()
 
 Scene::~Scene()
 {
-	for (std::vector<Node*>::iterator iter = m_Nodes.begin(); iter != m_Nodes.end(); iter++)
+	for (std::vector<Node*>::iterator iter = m_OpaqueNodes.begin(); iter != m_OpaqueNodes.end(); iter++)
+	{
+		delete *iter;
+	}
+	m_OpaqueNodes.clear();
+
+	for (std::vector<Node*>::iterator iter = m_TransparentNodes.begin(); iter != m_TransparentNodes.end(); iter++)
 	{
 		delete* iter;
 	}
-
-	m_Nodes.clear();
+	m_TransparentNodes.clear();
 }
 
 void Scene::Init()
@@ -71,6 +88,16 @@ void Scene::Init()
 	sphere1->SetPosition(XMFLOAT3(1.0f, 0.0f, 3.0f));
 	AddNode(sphere1);
 
+	Sphere* sphere2 = Sphere::Create("");
+	sphere2->SetPosition(XMFLOAT3(-1.0f, 0.0f, -3.0f));
+	sphere2->SetColor(XMFLOAT4(1.0f, 0.0f, 0.0f, 0.2f));
+	AddNode(sphere2, Node::NODE_TYPE_TRANSPARENT);
+
+	Sphere* sphere3 = Sphere::Create("");
+	sphere3->SetPosition(XMFLOAT3(-3.0f, 0.0f, -5.0f));
+	sphere3->SetColor(XMFLOAT4(0.0f, 1.0f, 0.0f, 0.2f));
+	AddNode(sphere3, Node::NODE_TYPE_TRANSPARENT);
+
 	Plane* plane = Plane::Create("assets/test.dds");
 	plane->SetPosition(XMFLOAT3(3.0f, -1.0f, 3.0f));
 	plane->setScale(XMFLOAT3(20.0f, 1.0f, 20.0f));
@@ -95,10 +122,19 @@ void Scene::Update(float delta)
 		light->Update(delta);
 	}
 
-	for (auto node : m_Nodes)
+	for (auto node : m_OpaqueNodes)
 	{
 		node->Update(delta);
 	}
+
+	for (auto node : m_TransparentNodes)
+	{
+		node->Update(delta);
+	}
+
+	SortOpaques();
+
+	SortTransparents();
 }
 
 void Scene::RenderShadowMap()
@@ -106,7 +142,7 @@ void Scene::RenderShadowMap()
 	// Render To ShadowMap
 	if (m_MainLight->IsEnableShadow())
 	{
-		m_MainLight->RenderToShadowMap(m_Nodes);
+		m_MainLight->RenderToShadowMap(m_OpaqueNodes);
 	}
 }
 
@@ -119,26 +155,23 @@ void Scene::Render()
 
 	// Render opaque objects
 	RENDER_CONTEXT::PushMarker(MARK("Render Opaque"));
-	for (std::vector<Node*>::iterator iter = m_Nodes.begin(); iter != m_Nodes.end(); iter++)
+	for (std::vector<Node*>::iterator iter = m_OpaqueNodes.begin(); iter != m_OpaqueNodes.end(); iter++)
 	{
-		if ((*iter)->GetType() == Node::NODE_TYPE_OPAQUE)
+		(*iter)->EnableDepthWrite();
+
+		// Main Lighting
+		m_MainLight->Apply();
+		(*iter)->SetRenderLightType(Light::LIGHT_TYPE::DIRECTIONAL);
+		(*iter)->Render();
+
+		// Additional lighting
+		for (auto light : m_AdditionalLights)
 		{
-			// Main Lighting
-			m_MainLight->Apply();
+			light->Apply();
 
-			(*iter)->SetRenderLightType(Light::LIGHT_TYPE::DIRECTIONAL);
-			(*iter)->SetEnableBlend(false);
+			(*iter)->SetRenderLightType(Light::LIGHT_TYPE::POINT);
+			(*iter)->SetBlendAdd();
 			(*iter)->Render();
-
-			// Additional lighting
-			for (auto light : m_AdditionalLights)
-			{
-				light->Apply();
-
-				(*iter)->SetRenderLightType(Light::LIGHT_TYPE::POINT);
-				(*iter)->SetEnableBlend(true);
-				(*iter)->Render();
-			}
 		}
 	}
 	RENDER_CONTEXT::PopMarker();
@@ -150,10 +183,24 @@ void Scene::Render()
 
 	// Render transparent objects
 	RENDER_CONTEXT::PushMarker(MARK("Render Transparent"));
-	for (std::vector<Node*>::iterator iter = m_Nodes.begin(); iter != m_Nodes.end(); iter++)
+	for (std::vector<Node*>::iterator iter = m_TransparentNodes.begin(); iter != m_TransparentNodes.end(); iter++)
 	{
-		if ((*iter)->GetType() == Node::NODE_TYPE_TRANSPARENT)
+		(*iter)->DisableDepthWrite();
+
+		// Main Lighting
+		m_MainLight->Apply();
+
+		(*iter)->SetRenderLightType(Light::LIGHT_TYPE::DIRECTIONAL);
+		(*iter)->SetBlendTransparent();
+		(*iter)->Render();
+
+		// Additional lighting
+		for (auto light : m_AdditionalLights)
 		{
+			light->Apply();
+
+			(*iter)->SetRenderLightType(Light::LIGHT_TYPE::POINT);
+			(*iter)->SetBlendAdd();
 			(*iter)->Render();
 		}
 	}
@@ -165,19 +212,72 @@ void Scene::AddNode(Node* node, Node::NODE_TYPE type)
 	if (node)
 	{
 		node->SetType(type);
-		m_Nodes.push_back(node);
+
+		if (type == Node::NODE_TYPE_OPAQUE)
+		{
+			m_OpaqueNodes.push_back(node);
+		}
+		else
+		{
+			m_TransparentNodes.push_back(node);
+		}
 	}
 }
 
 void Scene::RemoveNode(Node* node)
 {
-	for (std::vector<Node*>::iterator iter = m_Nodes.begin(); iter != m_Nodes.end(); iter++)
+	std::vector<Node*> temp;
+
+	if (node->GetType() == Node::NODE_TYPE_OPAQUE)
+	{
+		temp = m_OpaqueNodes;
+	}
+	else
+	{
+		temp = m_TransparentNodes;
+	}
+
+	for (std::vector<Node*>::iterator iter = temp.begin(); iter != temp.end(); iter++)
 	{
 		if (node == (*iter))
 		{
-			m_Nodes.erase(iter);
+			temp.erase(iter);
 
 			break;
 		}
+	}
+}
+
+void Scene::SortOpaques()
+{
+	auto& camera = GameApp::getInstance()->getMainCamera();
+
+	for (auto opaque : m_OpaqueNodes)
+	{
+		auto worldPos = XMLoadFloat3(&opaque->GetPosition());
+		auto viewMatrix = XMLoadFloat4x4(&camera.GetViewMatrix());
+		auto projMatrix = XMLoadFloat4x4(&camera.GetProjMatrix());
+		auto projPos = XMVector3Transform(worldPos, viewMatrix * projMatrix);
+
+		opaque->SetDistanceFromCamera(projPos.m128_f32[2]);
+	}
+
+	std::sort(m_OpaqueNodes.begin(), m_OpaqueNodes.end(), OpaqueSort);
+}
+
+void Scene::SortTransparents()
+{
+	auto& camera = GameApp::getInstance()->getMainCamera();
+
+	for (auto tranparent : m_TransparentNodes)
+	{
+		auto worldPos = XMLoadFloat3(&tranparent->GetPosition());
+		auto viewMatrix = XMLoadFloat4x4(&camera.GetViewMatrix());
+		auto projMatrix = XMLoadFloat4x4(&camera.GetProjMatrix());
+		auto projPos = XMVector3Transform(worldPos, viewMatrix * projMatrix);
+
+		tranparent->SetDistanceFromCamera(projPos.m128_f32[2]);
+
+		std::sort(m_TransparentNodes.begin(), m_TransparentNodes.end(), TransparentSort);
 	}
 }

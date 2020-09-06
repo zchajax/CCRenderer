@@ -25,11 +25,6 @@ public:
 
 	void RemoveNode(Node* node);
 
-	std::vector<Node*>& GetNodes()
-	{
-		return m_Nodes;
-	}
-
 	DirectionalLight* GetMainLight()
 	{
 		return m_MainLight;
@@ -37,7 +32,15 @@ public:
 
 private:
 
-	std::vector<Node*>	m_Nodes;
+	void SortOpaques();
+
+	void SortTransparents();
+
+private:
+
+
+	std::vector<Node*>	m_OpaqueNodes;
+	std::vector<Node*>	m_TransparentNodes;
 
 	DirectionalLight*	m_MainLight;
 	std::vector<Light*> m_AdditionalLights;

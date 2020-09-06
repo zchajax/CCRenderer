@@ -8,4 +8,9 @@ cbuffer ConstantCameraBuffer : register(b11)
 	float4 Eye;
 }
 
+cbuffer ConstantMaterialBuffer : register(b10)
+{
+	float4 Color;
+}
+
 #endif

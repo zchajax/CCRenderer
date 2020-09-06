@@ -117,7 +117,6 @@ void DirectionalLight::RenderToShadowMap(const std::vector<Node*>& nodes)
 		{
 			if ((*iter)->GetType() == Node::NODE_TYPE_OPAQUE)
 			{
-				(*iter)->SetEnableBlend(false);
 				(*iter)->RenderToDepthTexture();
 			}
 		}

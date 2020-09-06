@@ -32,6 +32,7 @@ void main(
 
 	float4 finalColor = 0;
 	float4 textureColor = txDiffuse.Sample(samLinear, input.Tex);
+	textureColor.rgb *= Color.rgb;
 	finalColor += vAmbientColor * textureColor;
 
 	finalColor += max(0, dot((float4)input.Norm, LightDir)) * LightColor * Intensity * textureColor * shadow;
@@ -39,7 +40,8 @@ void main(
 
 	finalColor = saturate(finalColor);
 
-	outColor = finalColor;
+	outColor.rgb = finalColor.rgb;
+	outColor.a = finalColor.a * Color.a;
 	outNormal.xyz = input.Norm.xyz;
 	outDepth.r = input.ClipPos.z / input.ClipPos.w;
 }

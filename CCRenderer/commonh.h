@@ -45,6 +45,11 @@ struct ConstantShapeBuffer
 	XMMATRIX mWvp;	
 };
 
+struct ConstantMaterialBuffer
+{
+	XMFLOAT4 Color;
+};
+
 struct ConstantCameraBuffer
 {
 	XMMATRIX mView;

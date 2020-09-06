@@ -30,6 +30,7 @@ void main(
 	float spec = pow(nh, 200);
 
 	float4 textureColor = txDiffuse.Sample(samLinear, input.Tex);
+	textureColor.rgb *= Color.rgb;
 	float dis = distance(LightPos.xyz, input.WorldPos.xyz);
 	float atten = GetAtten(dis);
 
@@ -39,7 +40,8 @@ void main(
 
 	finalColor = finalColor * atten;
 
-	outColor = finalColor;
+	outColor.rgb = finalColor.rgb;
+	outColor.a = finalColor.a * Color.a;
 	outNormal.xyz = input.Norm.xyz;
 	outDepth.r = input.ClipPos.z / input.ClipPos.w;
 }
