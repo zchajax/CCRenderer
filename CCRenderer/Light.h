@@ -17,7 +17,7 @@ public:
 
 	virtual ~Light();
 
-	void Update(float delta);
+	virtual void Update(float delta);
 
 	virtual void Apply() = 0;
 

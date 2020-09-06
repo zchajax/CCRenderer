@@ -2,6 +2,7 @@
 
 #include <d3d11_1.h>
 #include <DirectXMath.h>
+#include "Light.h"
 using namespace DirectX;
 
 class SamplerState;
@@ -93,6 +94,16 @@ public:
 		return m_IndexCount;
 	}
 
+	void SetEnableBlend(BOOL enable)
+	{
+		m_IsEnableBlend = enable;
+	}
+
+	void SetRenderLightType(Light::LIGHT_TYPE type)
+	{
+		m_RenderLightType = type;
+	}
+
 protected:
 
 	Node();
@@ -101,13 +112,16 @@ protected:
 
 	VERTEX_BUFFER*				m_pVertexBuffer;
 	ID3D11VertexShader*			m_pVertexShader;
-	ID3D11PixelShader*			m_pPixelShader;
+	ID3D11PixelShader*			m_pPixelShaderPoint;
+	ID3D11PixelShader*			m_pPixelShaderDirecional;
 	ID3D11InputLayout*			m_pVertexLayout;
 	ID3D11Buffer*				m_pIndexBuffer;
 	ID3D11Buffer*				m_pConstantBuffer;
 	Texture*					m_pTextureRV;
 	SamplerState*				m_pSamplerLinear;
 	SamplerState*				m_pSamplerShadow;
+	ID3D11DepthStencilState*	m_pStencilState;
+	ID3D11BlendState*			m_BlendState;
 	XMFLOAT4X4					m_World;
 	XMFLOAT4X4					m_Wvp;
 	XMFLOAT3					m_Position;
@@ -115,4 +129,6 @@ protected:
 	XMFLOAT3					m_Rotation;
 	INT							m_IndexCount;
 	BOOL						m_IsDirty;
+	BOOL						m_IsEnableBlend;
+	Light::LIGHT_TYPE			m_RenderLightType;
 };

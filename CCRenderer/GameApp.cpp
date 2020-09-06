@@ -2,6 +2,7 @@
 #include "RenderContext.h"
 #include "RenderTarget.h"
 #include "Texture_DX11.h"
+#include "Scene.h"
 #include "Cube.h"
 #include "Sphere.h"
 #include "Plane.h"
@@ -114,10 +115,6 @@ HRESULT GameApp::Init(HWND hWnd, int argc, char * argv[])
 
 	RENDERING_PIPELINE::Init();
 
-	//Create depth shader class
-	m_pCascadedShadowMap = new CascadedShadowMap();
-	m_pCascadedShadowMap->Init(1024, 1024);
-
 	// Setup the viewport
 	m_ViewPort.Width = (FLOAT)width;
 	m_ViewPort.Height = (FLOAT)height;
@@ -126,33 +123,8 @@ HRESULT GameApp::Init(HWND hWnd, int argc, char * argv[])
 	m_ViewPort.TopLeftX = 0;
 	m_ViewPort.TopLeftY = 0;
 
-	// Test
-	Cube* cube1 = Cube::Create("assets/tes12t.dds");
-	cube1->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));
-	AddNode(cube1);
-
-	Cube* cube2 = Cube::Create("assets/test.dds");
-	cube2->SetPosition(XMFLOAT3(3.5f, 0.0f, 0.0f));
-	AddNode(cube2);
-
-	Cube* cube3 = Cube::Create("assets/test.dds");
-	cube3->SetPosition(XMFLOAT3(16.0f, 0.0f, 10.0f));
-	AddNode(cube3);
-
-	Sphere* sphere1 = Sphere::Create("");
-	sphere1->SetPosition(XMFLOAT3(1.0f, 0.0f, 3.0f));
-	AddNode(sphere1);
-
-	Plane* plane = Plane::Create("assets/test.dds");
-	plane->SetPosition(XMFLOAT3(3.0f, -1.0f, 3.0f));
-	plane->setScale(XMFLOAT3(20.0f, 1.0f, 20.0f));
-	AddNode(plane);
-
-	Model* model1 = Model::Create("assets/Cerberus_LP.fbx");
-	model1->SetPosition(XMFLOAT3(2.0f, 1.0f, 5.0f));
-	model1->setRotation(XMFLOAT3(-3.14f / 2, 0.0f, 0.0f));
-	model1->setScale(XMFLOAT3(0.03f, 0.03f, 0.03f));
-	AddNode(model1);
+	m_Scene = new Scene();
+	m_Scene->Init();
 
 	// Initialize camera
 	m_Camera.Init();
@@ -160,24 +132,6 @@ HRESULT GameApp::Init(HWND hWnd, int argc, char * argv[])
 	auto At = XMFLOAT4(8.74f, 7.08f, 6.81f, 1.0f);
 	m_Camera.SetViewParams(Eye, At);
 	m_Camera.SetProjParams(0.785f, width / (FLOAT)height, 0.01f, 100.0f);
-
-	// Initialize light source
-	m_Light = DirectionalLight::Create(
-		XMFLOAT4(1.0, 1.0, 1.0, 1.0),
-		XMFLOAT4(-10.0f, 10.0f, -10.0f, 1.0f),
-		XMFLOAT4(-10.0f, 10.0f, -10.0f, 1.0f),
-		XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f),
-		1.0, 50.0f);
-	/*m_LightSource.Init();
-	m_LightSource.SetProjParams(width, height, 0.00f, 50.0f);*/
-
-	m_PointLight = PointLight::Create(
-		XMFLOAT4(0.0f, 5.0f, 0.0f, 1.0f),
-		XMFLOAT4(1.0, 1.0, 1.0, 1.0),
-		1.0);
-
-	// Initialize skybox
-	m_SkyBox.Init(RENDER_CONTEXT::GetDevice());
 
 	return S_OK;
 }
@@ -233,33 +187,17 @@ void GameApp::Update(float delta)
 	// Update camera
 	m_Camera.Update(delta);
 
-	// Update light source
-	m_Light->Update(delta);
+	// Update Scene
+	m_Scene->Update(delta);
 
-	// Update skybox
-	m_SkyBox.Update(delta);
+	//// test
+	//Node* test = m_Scene.at(0);
 
-	// Update Cascaded Shadow map
-	m_pCascadedShadowMap->Update(
-		m_Camera, 
-		XMLoadFloat4x4(&dynamic_cast<DirectionalLight*>(m_Light)->GetLightView()),
-		XMLoadFloat4x4(&dynamic_cast<DirectionalLight*>(m_Light)->GetLightProj()));
-
-	// test
-	Node* test = m_Nodes.at(0);
-
-	if (test)
-	{
-		auto rotation = test->GetRotation();
-		test->setRotation(XMFLOAT3(rotation.x, rotation.y + 1.0f * delta, rotation.z));
-	}
-
-	// Update objects
-	for (std::vector<Node*>::iterator iter = m_Nodes.begin(); iter != m_Nodes.end(); iter++)
-	{
-		(*iter)->Update(delta);
-	}
-
+	//if (test)
+	//{
+	//	auto rotation = test->GetRotation();
+	//	test->setRotation(XMFLOAT3(rotation.x, rotation.y + 1.0f * delta, rotation.z));
+	//}
 }
 
 void GameApp::Render()
@@ -278,32 +216,7 @@ void GameApp::Render()
 
 void GameApp::RenderShadowMap()
 {
-	RENDER_CONTEXT::PushMarker(MARK("ShadowPass"));
-
-	m_pCascadedShadowMap->SetViewPort(RENDER_CONTEXT::GetImmediateContext());
-
-	for (int cascadedIndex = 0; cascadedIndex < MAX_CASCADED; cascadedIndex++)
-	{
-		RENDER_CONTEXT::PushMarker(MARK("Cascaded shadow"));
-
-		m_pCascadedShadowMap->SetAndClearRenderTargetView(RENDER_CONTEXT::GetImmediateContext(), cascadedIndex);
-
-		m_pCascadedShadowMap->RenderToDepthMap(
-			RENDER_CONTEXT::GetImmediateContext(),
-			cascadedIndex);
-
-		for (std::vector<Node*>::iterator iter = m_Nodes.begin(); iter != m_Nodes.end(); iter++)
-		{
-			if ((*iter)->GetType() == Node::NODE_TYPE_OPAQUE)
-			{
-				(*iter)->RenderToDepthTexture();
-			}
-		}
-
-		RENDER_CONTEXT::PopMarker();
-	}
-
-	RENDER_CONTEXT::PopMarker();
+	m_Scene->RenderShadowMap();
 }
 
 void GameApp::RenderScene()
@@ -326,45 +239,7 @@ void GameApp::RenderScene()
 	// Render Camera
 	m_Camera.Render();
 
-	// Render light source
-	m_Light->Apply();
-
-	m_PointLight->Apply();
-
-	// Init Frame
-	m_pCascadedShadowMap->PrepareRenderWithShadowMap(RENDER_CONTEXT::GetImmediateContext());
-
-	RENDER_CONTEXT::SetPixelShaderResource(0, m_pCascadedShadowMap->getShadowMap());
-	/*RENDER_CONTEXT::SetPixelShaderResource(2, m_SkyBox.GetIrradianceMap());
-	RENDER_CONTEXT::SetPixelShaderResource(3, m_SkyBox.GetFilterMipmap());
-	RENDER_CONTEXT::SetPixelShaderResource(4, m_SkyBox.GetBrdfMap());*/
-
-	// Render opaque objects
-	RENDER_CONTEXT::PushMarker(MARK("Render Opaque"));
-	for (std::vector<Node*>::iterator iter = m_Nodes.begin(); iter != m_Nodes.end(); iter++)
-	{
-		if ((*iter)->GetType() == Node::NODE_TYPE_OPAQUE)
-		{
-			(*iter)->Render();
-		}
-	}
-	RENDER_CONTEXT::PopMarker();
-
-	// Render skybox
-	RENDER_CONTEXT::PushMarker(MARK("Render SkyBox"));
-	m_SkyBox.Render();
-	RENDER_CONTEXT::PopMarker();
-
-	// Render transparent objects
-	RENDER_CONTEXT::PushMarker(MARK("Render Transparent"));
-	for (std::vector<Node*>::iterator iter = m_Nodes.begin(); iter != m_Nodes.end(); iter++)
-	{
-		if ((*iter)->GetType() == Node::NODE_TYPE_TRANSPARENT)
-		{
-			(*iter)->Render();
-		}
-	}
-	RENDER_CONTEXT::PopMarker();
+	m_Scene->Render();
 
     extern bool gEnableMSAA;
 
@@ -391,11 +266,12 @@ void GameApp::Clear()
 		m_pCascadedShadowMap = NULL;
 	}
 
-	for (std::vector<Node*>::iterator iter = m_Nodes.begin(); iter != m_Nodes.end(); iter++)
+	if (m_Scene)
 	{
-		delete *iter;
+		delete m_Scene;
+
+		m_Scene = NULL;
 	}
-	m_Nodes.clear();
 
 	EventDispatcher::destroyInstance();
 	FBXLoader::DestoryInstance();
@@ -415,28 +291,6 @@ void GameApp::OnSize(int height, int width)
 void GameApp::OnEvent(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	EventDispatcher::getInstance()->OnEvent(hWnd, message, wParam, lParam);
-}
-
-void GameApp::AddNode(Node* node, Node::NODE_TYPE type)
-{
-	if (node)
-	{
-		node->SetType(type);
-		m_Nodes.push_back(node);
-	}
-}
-
-void GameApp::RemoveNode(Node* node)
-{
-	for (std::vector<Node*>::iterator iter = m_Nodes.begin(); iter != m_Nodes.end(); iter++)
-	{
-		if (node == (*iter))
-		{
-			m_Nodes.erase(iter);
-
-			break;
-		}
-	}
 }
 
 HRESULT GameApp::CompileShaderFromFile(LPCWSTR szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut)

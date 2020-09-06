@@ -8,18 +8,23 @@
 Node::Node()
 {
 	m_pVertexShader = NULL;
-	m_pPixelShader = NULL;
+	m_pPixelShaderPoint = NULL;
+	m_pPixelShaderDirecional = NULL;
 	m_pVertexLayout = NULL;
 	m_pVertexBuffer = NULL;
 	m_pIndexBuffer = NULL;
 	m_pTextureRV = NULL;
 	m_pSamplerLinear = NULL;
 	m_pSamplerShadow = NULL;
+	m_pStencilState = NULL;
+	m_BlendState = NULL;
 	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_IndexCount = 0;
 	m_IsDirty = true;
+	m_IsEnableBlend = false;
+	m_RenderLightType = Light::DIRECTIONAL;
 }
 
 Node::~Node()
@@ -29,8 +34,11 @@ Node::~Node()
 	if (m_pIndexBuffer) m_pIndexBuffer->Release();
 	if (m_pVertexLayout) m_pVertexLayout->Release();
 	if (m_pVertexShader) m_pVertexShader->Release();
-	if (m_pPixelShader) m_pPixelShader->Release();
+	if (m_pPixelShaderPoint) m_pPixelShaderPoint->Release();
+	if (m_pPixelShaderDirecional) m_pPixelShaderDirecional->Release();
 	if (m_pTextureRV) m_pTextureRV->Release();
+	if (m_pStencilState) m_pStencilState->Release();
+	if (m_BlendState) m_BlendState->Release();
 }
 
 void Node::Update(float delta)
@@ -113,7 +121,14 @@ void Node::Render()
 	immediateContext->VSSetConstantBuffers(0, 1, &m_pConstantBuffer);
 
 	// Set pixel shader
-	immediateContext->PSSetShader(m_pPixelShader, NULL, 0);
+	if (m_RenderLightType == Light::DIRECTIONAL)
+	{
+		immediateContext->PSSetShader(m_pPixelShaderDirecional, NULL, 0);
+	}
+	else if (m_RenderLightType == Light::POINT)
+	{
+		immediateContext->PSSetShader(m_pPixelShaderPoint, NULL, 0);
+	}
 
 	ApplyRenderState();
 

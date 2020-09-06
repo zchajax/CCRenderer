@@ -11,6 +11,7 @@
 #include <DirectXMath.h>
 using namespace DirectX;
 
+class Scene;
 class CascadedShadowMap;
 class SWAP_CHAIN;
 class GameApp
@@ -52,14 +53,8 @@ public:
     // Window size change
     void OnSize(int height, int width);
 
-    // Recevied message
+    // Recevie message
     void OnEvent(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-
-    // Add shape to the Rendering list
-    void AddNode(Node* shape, Node::NODE_TYPE type = Node::NODE_TYPE_OPAQUE);
-
-    // Remove shape from the rendering list
-    void RemoveNode(Node* shape);
 
     // Get Main Camera
     Camera& getMainCamera()
@@ -103,10 +98,7 @@ private:
 
     Timer			m_Timer;
 
-    Camera			m_Camera;
-    Light*		    m_Light;
-    Light*          m_PointLight;
-    SkyBox			m_SkyBox;
+    Scene*          m_Scene;
 
-    std::vector<Node*>	m_Nodes;
+    Camera			m_Camera;
 };
