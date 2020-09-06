@@ -32,24 +32,24 @@ void Scene::Init()
 		XMFLOAT4(-10.0f, 10.0f, -10.0f, 1.0f),
 		XMFLOAT4(-10.0f, 10.0f, -10.0f, 1.0f),
 		XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f),
-		0.3, 50.0f, true);
+		1.0, 50.0f, true);
 
 	auto pointLight = PointLight::Create(
 		XMFLOAT4(0.0f, 5.0f, 0.0f, 1.0f),
 		XMFLOAT4(0.0, 0.0, 1.0, 1.0),
-		0.8);
+		1.0);
 	m_AdditionalLights.push_back(pointLight);
 
 	auto pointLight1 = PointLight::Create(
 		XMFLOAT4(3.0f, 5.0f, 3.0f, 1.0f),
 		XMFLOAT4(1.0, 0.0, 0.0, 1.0),
-		0.8);
+		1.0);
 	m_AdditionalLights.push_back(pointLight1);
 
 	auto pointLight2 = PointLight::Create(
 		XMFLOAT4(-3.0f, 5.0f, -3.0f, 1.0f),
 		XMFLOAT4(0.0, 1.0, 0.0, 1.0),
-		0.8);
+		1.0);
 	m_AdditionalLights.push_back(pointLight2);
 
 	// Initialize skybox

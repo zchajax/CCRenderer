@@ -3,6 +3,8 @@
 #include "RenderTarget.h"
 #include "Texture_DX11.h"
 #include "VertexBuffer.h"
+#include "SamplerState.h"
+#include "SamplerStateManager.h"
 #include "commonh.h"
 
 FILTER2D::FILTER2D(const WCHAR* pixelShaderPath)
@@ -74,7 +76,16 @@ void FILTER2D::Init(TEXTURE_DX11* source, RENDER_TARGET* target)
 	RENDER_CONTEXT::ApplyRenderTargets();
 
 	RENDER_CONTEXT::SetPixelShaderResource(0, source->GetShaderResource());
-	RENDER_CONTEXT::SetPixelSampler(0, source->GetSamplerState());
+
+	if (source->GetSamplerState())
+	{
+		RENDER_CONTEXT::SetPixelSampler(0, source->GetSamplerState());
+	}
+	else
+	{
+		SamplerState* sampleState = SamplerStateManager::GetInstance()->GetSamplerState(D3D11_FILTER_MIN_MAG_MIP_POINT, D3D11_TEXTURE_ADDRESS_CLAMP, D3D11_COMPARISON_NEVER);
+		RENDER_CONTEXT::SetPixelSampler(0, sampleState->GetSamplerState());
+	}
 }
 
 void FILTER2D::Apply()

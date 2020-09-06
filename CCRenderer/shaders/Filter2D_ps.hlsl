@@ -13,7 +13,7 @@ float4 main(PS_INTPUT IN) : SV_Target
 	float4 finalColor = txDiffuse.Sample(samLinear, IN.Tex);
 
 	//finalColor = finalColor / (finalColor + 1.0f);
-	finalColor = pow(finalColor, 1.0f / 2.2f);
+	//finalColor = pow(finalColor, 1.0f / 2.2f);
 
 	return finalColor;
 }
